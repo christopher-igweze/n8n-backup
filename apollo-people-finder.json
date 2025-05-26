@@ -1,0 +1,1223 @@
+{
+  "createdAt": "2025-05-15T14:42:17.018Z",
+  "updatedAt": "2025-05-21T09:36:19.000Z",
+  "id": "P9wIGC41yTSLFNTE",
+  "name": "Apollo People Finder",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        1820
+      ],
+      "id": "bff3ad5e-47f2-4a19-8926-af08d4d46bd6",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "Wely_h5JERQZ4Z_s5x0S_w"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -340,
+        1020
+      ],
+      "id": "e7e9c2cf-fd58-4627-b0d6-f5829c14023e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6bf8c44-47ec-46a4-b269-0434718741f9",
+              "name": "people",
+              "value": "={{ $json.people }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        1020
+      ],
+      "id": "b7e704af-e2e8-4d4e-8eb5-90b326105194",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "people",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        100,
+        1020
+      ],
+      "id": "165f7c76-1872-4ed7-8491-ba71a260e1a8",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "name, linkedin_url, title",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        320,
+        1020
+      ],
+      "id": "7bbc4ef2-5431-49a2-888e-229ed45fd24c",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "people-finder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1220,
+        1020
+      ],
+      "id": "fc39a55e-628d-4fc2-9d54-56c05ddc8313",
+      "name": "Webhook",
+      "webhookId": "8b4ea4ae-9681-4e05-800b-57bf47686fc4"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        1020
+      ],
+      "id": "e10743dc-b1cd-431c-aa6c-84d87371736c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 1: Executive & Ownership (Owner, Founder, VP)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "74362008-db12-4438-b747-9081b79cd9d5"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ea22fb4f-a81c-4c29-ba6b-9bf18201de1e",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 1b: C_Suite",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 1b"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5f418477-24aa-4569-9b5c-063bd037d42a",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 1c: Partner",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 1c"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1145e637-e636-461d-8578-375506d5652f",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 2: Mid-Level Leadership & Department Heads (Head, Director, Manager)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "96e59ac6-df30-4f4e-9137-d053190da8bf",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 2b: Senior",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 2b"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "de1c4339-eb64-46ac-ad26-1e06bcd1efda",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 2b: Entry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 2c"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0d6d18db-42d7-4d6a-941a-50335b983986",
+                    "leftValue": "={{ $('Webhook').item.json.body.category }}",
+                    "rightValue": "Tier 3: Intern",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tier 3"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -780,
+        940
+      ],
+      "id": "af832cc8-1914-464d-a36c-04763fb33f5d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=vp&person_seniorities[]=founder&person_seniorities[]=owner&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        420
+      ],
+      "id": "4c1b7be3-0a57-4e1b-b5c6-900a489872ec",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=manager&person_seniorities[]=director&person_seniorities[]=head&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        1020
+      ],
+      "id": "0240975c-01cb-453c-a5c3-f694bcceb2c4",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=intern&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        1620
+      ],
+      "id": "de496a13-f27d-4849-8db4-1368967a6fd2",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=c_suite&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        620
+      ],
+      "id": "76b788dd-1129-4b31-b3cf-be10256b6a31",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=partner&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        820
+      ],
+      "id": "aa00c9b3-e386-44dd-9707-fd23cb75d94c",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/api/v1/organizations/enrich",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "domain",
+              "value": "={{ $json.body.domain }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "Wely_h5JERQZ4Z_s5x0S_w"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1000,
+        1020
+      ],
+      "id": "6e0403bc-2c62-4ed6-8286-766f10fb0644",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=Switzerland&person_locations[]=Germany&person_locations[]=Austria&person_seniorities[]=entry&q_organization_domains_list[]=flixbus.com&per_page=10",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "Wely_h5JERQZ4Z_s5x0S_w"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1220,
+        160
+      ],
+      "id": "99758624-b24a-4672-9d67-a81e345dd540",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=senior&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        1220
+      ],
+      "id": "8ddb13ed-931a-465c-ab55-d4306104de19",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "489dcfeb-6123-46f0-b445-40aa3f849785",
+              "name": "URL",
+              "value": "=https://api.apollo.io/api/v1/mixed_people/search?person_titles[]=&person_locations[]=germany&person_locations[]=Switzerland&person_locations[]=Austria&person_seniorities[]=entry&organization_locations[]=&q_organization_domains_list[]={{ $json.organization.primary_domain }}&organization_ids[]={{ $('HTTP Request1').item.json.organization.id }}&per_page=20",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        1420
+      ],
+      "id": "7e545ac6-8e7f-4858-bc27-e2aa13c99fff",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "authentication": "airtableOAuth2Api",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appRvJIV7kQUXKwb0",
+          "mode": "list",
+          "cachedResultName": "Xquer Prospects",
+          "cachedResultUrl": "https://airtable.com/appRvJIV7kQUXKwb0"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblwbSwtFURoGWt1N",
+          "mode": "list",
+          "cachedResultName": "Buying Center Reports",
+          "cachedResultUrl": "https://airtable.com/appRvJIV7kQUXKwb0/tblwbSwtFURoGWt1N"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $json.body.company }}",
+            "Category": "={{ $json.body.category }}",
+            "Research Report": "={{ $json.body['report url'] }}",
+            "LinkedIn Profile URL": "={{ $json.body.linkedin }}",
+            "Title": "={{ $json.body.title }}",
+            "Name": "={{ $json.body.name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Decision Maker",
+                  "value": "Decision Maker"
+                },
+                {
+                  "name": "Influencer",
+                  "value": "Influencer"
+                },
+                {
+                  "name": "Gatekeeper",
+                  "value": "Gatekeeper"
+                },
+                {
+                  "name": "End User",
+                  "value": "End User"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LinkedIn Profile URL",
+              "displayName": "LinkedIn Profile URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Research Report",
+              "displayName": "Research Report",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        340,
+        520
+      ],
+      "id": "24cd699d-7863-42a3-a9ca-f857bdc4b495",
+      "name": "Airtable",
+      "credentials": {
+        "airtableOAuth2Api": {
+          "id": "hTfQD5z5RPdGe4iG",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "buying-center",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        520
+      ],
+      "id": "a540967d-88d2-43ea-a9ca-baaca34ac13f",
+      "name": "Webhook1",
+      "webhookId": "f4169611-25b7-4958-8f42-469d75d4dc67"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        520
+      ],
+      "id": "1006db38-8c69-4791-bed1-bac8a3335fd4",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Buying Center",
+        "height": 360,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        400
+      ],
+      "id": "0daa66b4-e696-4d5a-a95c-f1d0ee341885",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "authentication": "airtableOAuth2Api",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appRvJIV7kQUXKwb0",
+          "mode": "list",
+          "cachedResultName": "Xquer Prospects",
+          "cachedResultUrl": "https://airtable.com/appRvJIV7kQUXKwb0"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl91s0POVrl6Ow3f",
+          "mode": "list",
+          "cachedResultName": "Company Research Reports",
+          "cachedResultUrl": "https://airtable.com/appRvJIV7kQUXKwb0/tbl91s0POVrl6Ow3f"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $json.body.company }}",
+            "Attachments": "={{ $json.body.url }}",
+            "Campaign ID": "manual"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Attachments",
+              "displayName": "Attachments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Campaign ID",
+              "displayName": "Campaign ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        340,
+        120
+      ],
+      "id": "23d69830-71e3-4885-a7a8-965bb9177c73",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableOAuth2Api": {
+          "id": "hTfQD5z5RPdGe4iG",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "company-report",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        120
+      ],
+      "id": "4982f087-dc50-4637-9335-e754025a2160",
+      "name": "Webhook2",
+      "webhookId": "f4169611-25b7-4958-8f42-469d75d4dc67"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        120
+      ],
+      "id": "ae19617f-d3f5-4a9c-8b5f-fbc599e1c106",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Company Report",
+        "height": 360,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4924252-1963-4bac-a8b4-dd809d7cb110",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.verstandai.xyz",
+            "user-agent": "node",
+            "content-length": "128",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "x-forwarded-for": "35.176.0.126",
+            "x-forwarded-host": "n8n.verstandai.xyz",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "09092287a8e2",
+            "x-real-ip": "35.176.0.126"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "company": "bleep",
+            "name": "bleep bleep",
+            "title": "bleep",
+            "linkedin": "bleep.com",
+            "report url": "bleep.com",
+            "category": "Influencer"
+          },
+          "webhookUrl": "https://n8n.verstandai.xyz/webhook-test/buying-center",
+          "executionMode": "test"
+        }
+      }
+    ],
+    "Webhook2": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.verstandai.xyz",
+            "user-agent": "node",
+            "content-length": "128",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "x-forwarded-for": "35.176.0.126",
+            "x-forwarded-host": "n8n.verstandai.xyz",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "09092287a8e2",
+            "x-real-ip": "35.176.0.126"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "company": "bleep",
+            "url": "youtube.com"
+          },
+          "webhookUrl": "https://n8n.verstandai.xyz/webhook-test/buying-center",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "281c6610-6666-49b9-99b7-fd1f0d9e1502",
+  "triggerCount": 3,
+  "tags": [
+    {
+      "createdAt": "2025-05-15T14:42:15.909Z",
+      "updatedAt": "2025-05-15T14:42:15.909Z",
+      "id": "b3bktmNl5EqgXPPU",
+      "name": "Xquer"
+    }
+  ]
+}
