@@ -1,0 +1,883 @@
+{
+  "createdAt": "2025-05-12T14:29:20.547Z",
+  "updatedAt": "2025-05-15T15:49:58.000Z",
+  "id": "efvazPynBLqQhqOA",
+  "name": "My workflow 2",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d99be968-2686-40eb-8927-70e20ea29347",
+      "name": "When chat message received",
+      "webhookId": "b9c830bb-dc14-4c07-9968-038e4378028f"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a Company Research Agent. Your role is to gather detailed, structured, and up-to-date information about any company using a specific set of tools in a defined sequence. Your goal is to return clear, concise insights that can be used for outbound sales, competitive analysis, or investment research.\n\nInput Required:\n\nYou must receive a valid website URL of the target company from the user before proceeding.\n\nTools & Execution Order:\n\n1. Company Website Content\nUse the company’s website URL to fetch and summarize what the company does in simple, explicit terms. Avoid naming the company in the summary.\n\n2. Subpages: About, Pricing, FAQ, Blog\nCrawl key subpages to collect deeper insights into the company’s value proposition, pricing model, customer concerns, and thought leadership.\n\n3. LinkedIn – Company Profile\nRetrieve the company’s LinkedIn page URL for social verification and growth signals.\n\n4. LinkedIn – Founders’ Profiles\nFind and return the LinkedIn profiles of up to two founders or key executives.\n\n5. Funding Details\nSearch for funding and valuation information. If unavailable, return “NO”.\n\n6. Competitor Analysis\nIdentify 3–5 companies doing similar work (excluding the target company’s domain). Summarize their offerings in simple English.\n\n7. 10K Financial Reports (if applicable)\nIf the company is public or there’s related financial data, summarize its recent 10-K or financial data in plain terms.\n\nBehavioral Guidelines:\n- Be precise, factual, and avoid marketing fluff.\n- Return only relevant data—if something isn’t available, say so clearly.\n- Do not proceed until the user provides a website URL.\n- Only execute tools in the order above, no skipping."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3dd91367-f099-4ec9-8ea0-51c86f802b40",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        -420
+      ],
+      "id": "a89b1585-5c7d-4000-ab9a-0120af64678c",
+      "name": "Think"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        220
+      ],
+      "id": "d7b4d52e-d0a4-43c4-8043-319c35babeb2",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetch and summarize the main content from the company's website, including a simple explanation of what the company does.",
+        "method": "POST",
+        "url": "https://api.exa.ai/contents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"ids\": [\n    {{ $fromAI(\"website\", \"This is the website URL of the company\") }}\n  ],\n  \"text\": true,\n  \"summary\": {\n            query: \"Describe the company in few word. It should be very simple and explicity tell what does the company do/is. Do not include the name of the company.\"\n          }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -580
+      ],
+      "id": "c12fa28b-5659-4484-b664-b01feae5ea57",
+      "name": "Company Website Content"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Crawl and extract content from key subpages (About, Pricing, FAQ, Blog) of the company website to gather contextual company information.\n",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": {{ $fromAI(\"website\", \"This is the website URL of the company\") }},\n  \"category\": \"company\",\n  \"type\": \"neural\",\n  \"numResults\": 1,\n  \"includeDomains\": [\n    {{ $fromAI(\"domain\", \"This is the domain of the company\") }}\n  ],\n  \"contents\": {\n    \"text\": true,\n    \"livecrawl\": \"always\",\n    \"subpages\": 4,\n    \"subpageTarget\": [\n      \"about\",\n      \"pricing\",\n      \"faq\",\n      \"blog\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        -640
+      ],
+      "id": "3b7d5637-c256-47ef-a4ec-3d79f2853bc6",
+      "name": "Subpages (About, FAQs, Pricing, Blog)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Retrieve detailed funding and valuation information for the company. If unavailable, returns \"NO\".",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": {{ $fromAI(\"website\", \"This is the website URL of the company\") }}\nFunding:\",\n  \"type\": \"keyword\",\n  \"numResults\": 1,\n  \"includeText\": [\n    {{ $fromAI(\"domain\", \"This is the domain of the company\") }}\n  ],\n  \"contents\": {\n    \"text\": true,\n    \"summary\": {\n      \"query\": \"Tell me all about the funding (and if available, the valuation) of this company in detail. Do not tell me about the company, just give all the funding information in detail. If funding or valuation info is not preset, just reply with one word \\\"NO\\\".\"\n    },\n    \"livecrawl\": \"always\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1400,
+        -700
+      ],
+      "id": "05176744-9bd9-456c-85f8-f77ccdb22d83",
+      "name": "Funding Details"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Find and return the official LinkedIn company profile URL.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} Linkedin profile:\",\n  \"type\": \"keyword\",\n  \"numResults\": 1,\n  \"contents\": {\n    \"text\": true,\n    \"livecrawl\": \"always\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        -500
+      ],
+      "id": "e48c0e6e-5075-40eb-aa27-562542274d23",
+      "name": "Company Profile"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search and return LinkedIn profile URLs of the company’s founders.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} founder's Linkedin profile:\",\n  \"type\": \"keyword\",\n  \"numResults\": 2,\n  \"includeDomains\": [\"linkedin.com\"]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        -540
+      ],
+      "id": "e408ccd0-6a15-43f5-8720-fea90943da75",
+      "name": "Founders Profiles"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetch simplified financial insights by finding and summarizing external 10-K-like financial data related to the company.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"company_summary\", \"This is a summary of the company\") }}\",\n    \"numResults\": 5,\n    \"type\": \"neural\",\n    \"excludeDomains\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Explain in one/two lines what does this company do in simple english. Don't use any diffcult words.\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        -640
+      ],
+      "id": "59c1946c-e48b-4ffd-8801-88df7c4192b0",
+      "name": "10K Financial Reports"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search external sources (excluding the company’s domain) to gather summaries that describe what similar companies do.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"company_summary\", \"This is a summary of the company\") }}\",\n    \"numResults\": 5,\n    \"type\": \"neural\",\n    \"excludeDomains\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Explain in one/two lines what does this company do in simple english. Don't use any diffcult words.\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        -560
+      ],
+      "id": "40e830c1-f45c-44c8-bc00-95ed33c8a6db",
+      "name": "Competitor Analysis"
+    },
+    {
+      "parameters": {
+        "path": "exa"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        -980
+      ],
+      "id": "a24ff0cd-5392-44c4-a4aa-4b24c0ddc79b",
+      "name": "Exa",
+      "webhookId": "4fa9274c-3e5e-4fae-bbe2-10a5acd7a9c3"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n.verstandai.agency/mcp/exa/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -980
+      ],
+      "id": "9ea5eee1-ec28-438e-bd84-f34e67681d40",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        220
+      ],
+      "id": "a7c9b318-82f5-4eba-8ab6-5575d47ae626",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search and return LinkedIn profile URLs of the company’s founders.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} founder's Linkedin profile:\",\n  \"type\": \"keyword\",\n  \"numResults\": 2,\n  \"includeDomains\": [\"linkedin.com\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        140
+      ],
+      "id": "71f71f65-9318-466a-bd79-1c2cc1ab38c6",
+      "name": "Founders_Profiles"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Find and return the official LinkedIn company profile URL.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} Linkedin profile:\",\n  \"type\": \"keyword\",\n  \"numResults\": 1,\n  \"contents\": {\n    \"text\": true,\n    \"livecrawl\": \"always\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        140
+      ],
+      "id": "87018894-c15f-42b7-9b24-9556b8fbbc7a",
+      "name": "Company_Profile"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search external sources (excluding the company’s domain) to gather summaries that describe what similar companies do.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"company_summary\", \"This is a summary of the company\") }}\",\n    \"numResults\": 5,\n    \"type\": \"neural\",\n    \"excludeDomains\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Explain in one/two lines what does this company do in simple english. Don't use any diffcult words.\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        220
+      ],
+      "id": "dfbc88c0-9650-4cee-9688-b4668abb62f1",
+      "name": "Competitor_Analysis"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetch simplified financial insights by finding and summarizing external 10-K-like financial data related to the company.",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"company_summary\", \"This is a summary of the company\") }}\",\n    \"numResults\": 5,\n    \"type\": \"neural\",\n    \"excludeDomains\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Explain in one/two lines what does this company do in simple english. Don't use any diffcult words.\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        220
+      ],
+      "id": "1c009001-68f8-4466-b924-ad5f26bbd6db",
+      "name": "10K_Financial_Reports"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Retrieve detailed funding and valuation information for the company. If unavailable, returns \"NO\".",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} Funding:\",\n    \"type\": \"keyword\",\n    \"numResults\": 1,\n    \"includeText\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Tell me all about the funding (and if available, the valuation) of this company in detail. Do not tell me about the company, just give all the funding information in detail. If funding or valuation info is not preset, just reply with one word - NO\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        140
+      ],
+      "id": "fd42f526-362f-450f-bc7c-731dc600f87c",
+      "name": "Funding_Details"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Crawl and extract content from key subpages (About, Pricing, FAQ, Blog) of the company website to gather contextual company information.\n",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }}\",\n  \"category\": \"company\",\n  \"type\": \"neural\",\n  \"numResults\": 1,\n  \"includeDomains\": [\n    \"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"\n  ],\n  \"contents\": {\n    \"text\": true,\n    \"livecrawl\": \"always\",\n    \"subpages\": 4,\n    \"subpageTarget\": [\n      \"about\",\n      \"pricing\",\n      \"faq\",\n      \"blog\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        260
+      ],
+      "id": "8fccec64-530b-4c8e-8864-cf7683ce3166",
+      "name": "Subpages_About_FAQs_Pricing_Blog"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetch and summarize the main content from the company's website, including a simple explanation of what the company does.",
+        "method": "POST",
+        "url": "https://api.exa.ai/contents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"ids\": [\n    \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }}\"\n  ],\n  \"livecrawl\": \"always\",\n  \"summary\": {\n    \"query\": \"Describe the company in few word. It should be very simple and explicity tell what does the company do/is. Do not include the name of the company.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        240
+      ],
+      "id": "d06af5fa-9505-439f-a7ab-e22085c5b7c0",
+      "name": "Company_Website_Content1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Retrieve detailed funding and valuation information for the company. If unavailable, returns \"NO\".",
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $fromAI(\"website\", \"This is the website URL of the company\") }} Funding:\",\n    \"type\": \"keyword\",\n    \"numResults\": 1,\n    \"includeText\": [\"{{ $fromAI(\"domain\", \"This is the domain of the company\") }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Tell me all about the funding (and if available, the valuation) of this company in detail. Do not tell me about the company, just give all the funding information in detail. If funding or valuation info is not preset, just reply with one word - NO\"\n      },\n      \"livecrawl\": \"always\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1740,
+        60
+      ],
+      "id": "ed3223b8-a6cb-4eae-aebb-768dd1149b62",
+      "name": "Funding_Details1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        400
+      ],
+      "id": "ec5c4b38-5efd-4854-a62a-a8d507abdc6b",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "71090bc7-5a1b-448c-940c-3559ad8414fc",
+              "name": "Website URL",
+              "value": "https://airbnb.com/",
+              "type": "string"
+            },
+            {
+              "id": "ecb68000-e5cb-4dc4-a791-ed369f18e6a9",
+              "name": "Domain",
+              "value": "airbnb.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1840,
+        400
+      ],
+      "id": "6634dcb3-4e11-46a0-9f39-9643dce6fff0",
+      "name": "Set Details"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.exa.ai/contents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"ids\": [\n    \"{{ $('Set Details').item.json['Website URL'] }}\"\n  ],\n  \"livecrawl\": \"always\",\n  \"summary\": {\n    \"query\": \"Describe the company. State the company's unique value proposition. It should be very simple and explicity tell what does the company do/is. Do not include the name of the company.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2260,
+        400
+      ],
+      "id": "00a20d95-e812-4d04-9913-6fefb27ad783",
+      "name": "Company_website1",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $json['Website URL'] }}\",\n    \"includeDomains\": [\"{{ $json.Domain }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Summarise the information and come up with a description of their target audience, and their brand voice, e.g bold, friendly, trustworthy, etc. it can be multiple\",\n        \"schema\": {\n          \"name\": \"brand_identity\",\n          \"schema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"target_audience\": {\n                \"type\": \"array\",\n                \"description\": \"A list summarizing the characteristics and demographics of the target audience.\",\n                \"items\": {\n                  \"type\": \"string\"\n                }\n              },\n              \"brand_voice\": {\n                \"type\": \"array\",\n                \"description\": \"The various tones and styles that represent the brand's communication.\",\n                \"items\": {\n                  \"type\": \"string\",\n                  \"enum\": [\"bold\", \"friendly\", \"trustworthy\", \"professional\", \"playful\", \"sophisticated\", \"authentic\", \"empathetic\"]\n                }\n              }\n            },\n            \"required\": [\"target_audience\", \"brand_voice\"],\n            \"additionalProperties\": false\n          },\n          \"strict\": true\n        }\n      },\n      \"livecrawl\": \"always\",\n      \"subpages\": 4,\n      \"subpageTarget\": \"about, pricing, faq, blog\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2040,
+        400
+      ],
+      "id": "44877fae-8f45-442f-9370-492b17b905dc",
+      "name": "Sub Pages",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.exa.ai/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "bb92fb45-4a40-4620-985c-fb8e5614947f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"query\": \"{{ $json.results[0].summary.trim() }}\",\n    \"numResults\": 5,\n    \"type\": \"neural\",\n    \"excludeDomains\": [\"{{ $('Set Details').item.json.Domain }}\"],\n    \"contents\": {\n      \"text\": true,\n      \"summary\": {\n        \"query\": \"Only provide the name of the company\"\n      },\n      \"livecrawl\": \"always\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2480,
+        400
+      ],
+      "id": "1b562f5a-2d4e-4078-97c9-eef383fe17ad",
+      "name": "Competitors",
+      "executeOnce": true
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Website Content": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subpages (About, FAQs, Pricing, Blog)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Funding Details": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Profile": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Founders Profiles": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10K Financial Reports": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Competitor Analysis": {
+      "ai_tool": [
+        [
+          {
+            "node": "Exa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Founders_Profiles": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Company_Profile": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Competitor_Analysis": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "10K_Financial_Reports": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Funding_Details": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Subpages_About_FAQs_Pricing_Blog": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company_Website_Content1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Funding_Details1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Details": {
+      "main": [
+        [
+          {
+            "node": "Sub Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sub Pages": {
+      "main": [
+        [
+          {
+            "node": "Company_website1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company_website1": {
+      "main": [
+        [
+          {
+            "node": "Competitors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3f3b4af7-4c0c-4e4c-bbba-8c0804ec246e",
+  "triggerCount": 2,
+  "tags": []
+}
