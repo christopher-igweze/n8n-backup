@@ -1,0 +1,1297 @@
+{
+  "createdAt": "2025-05-14T11:19:59.283Z",
+  "updatedAt": "2025-05-14T11:20:31.000Z",
+  "id": "VIj1mTNt1d2Lu44B",
+  "name": "My workflow 3",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "anchor_insurance",
+        "toolDescription": "Use this to get information about Anchor Insurance",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        580,
+        320
+      ],
+      "id": "153e33f1-805f-482c-bce1-a146967fad14",
+      "name": "Supabase Vector Store",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "16Laq720F4yXxqPkjUnHBwJk40uzHLG6S",
+          "mode": "list",
+          "cachedResultName": "FAQAs (2022).docx",
+          "cachedResultUrl": "https://docs.google.com/document/d/16Laq720F4yXxqPkjUnHBwJk40uzHLG6S/edit?usp=drivesdk&ouid=114892093868842858872&rtpof=true&sd=true"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -20,
+        760
+      ],
+      "id": "537abf96-7d96-419f-b1b0-fbb6a3d5029b",
+      "name": "Google Drive",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "FIRS2",
+          "mode": "list",
+          "cachedResultName": "FIRS2"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        200,
+        760
+      ],
+      "id": "bd935202-d811-4873-8220-24f7bef66803",
+      "name": "Supabase Vector Store1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        980
+      ],
+      "id": "5063d268-dcfe-4f4b-864c-7f943fe58787",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        320,
+        960
+      ],
+      "id": "e478abe0-8aeb-42ea-bff7-5eef1de245c0",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        340,
+        1140
+      ],
+      "id": "0b35157a-b9d3-4156-98e4-ed203879e8db",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        460
+      ],
+      "id": "518f693f-0145-41ab-a977-410e37f0fd0f",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.args.question }}",
+        "options": {
+          "systemMessage": "You are the Retrieval Function Agent for Anchor Insurance, interfacing with a Supabase vector store to perform Retrieval Augmented Generation (RAG). When a long answer is retrieved from the vector store, your role is to generate a concise, clear, and accurate summary that directly addresses the user's query.\n\nGuidelines:\n•\tExtract only the most relevant and important details from the retrieved content.\n•\tEnsure your summary is factually correct and based solely on the retrieved information.\n•\tAvoid filler text, overly verbose explanations, or extraneous commentary—aim for brevity and clarity.\n•\tInclude additional context only if necessary for a comprehensive answer.\n•\tUse structured formatting if it improves clarity.\n•\tYour final output should be a succinct, user-friendly answer that satisfies the query while being easily digestible.\n- YOU MUST GIVE CONCISE ANSWERES, LIST WHERE NEEDED, BRIEFLY EXPLAIN IF NEEDED, COMPOSE IN A SHORT SENTENCE OR TWO, ONLY ELABORATE IF TOLD TO.\n\nYour concise summary will be the final output provided to the user."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        340,
+        140
+      ],
+      "id": "284cac89-e1c3-4eea-a15b-be31eb56aa49",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        320
+      ],
+      "id": "2138f2fa-efbb-44c2-a169-24d842df414c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "anchor",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        60,
+        140
+      ],
+      "id": "6d488f8b-fb23-46dd-aaba-f1a19fc89bda",
+      "name": "Webhook",
+      "webhookId": "78ac0749-c277-4aec-aa87-5aeb722cc39a"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        140
+      ],
+      "id": "577f49a8-f4b2-453b-bf0e-e56f53aaa239",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.args.question }}",
+        "options": {
+          "systemMessage": "You are the Retrieval Function Agent for the Federal Inland Revenue Service(FIRS), interfacing with a Supabase vector store to perform Retrieval Augmented Generation (RAG) for any query that comes through. When a long answer is retrieved from the vector store, your role is to generate a concise, clear, and accurate summary that directly addresses the user's query.\n\nGuidelines:\n•\tExtract only the most relevant and important details from the retrieved content.\n•\tEnsure your summary is factually correct and based solely on the retrieved information.\n•\tAvoid filler text, overly verbose explanations, or extraneous commentary—aim for brevity and clarity.\n•\tInclude additional context only if necessary for a comprehensive answer.\n•\tUse structured formatting if it improves clarity.\n•\tYour final output should be a succinct, user-friendly answer that satisfies the query while being easily digestible.\n- YOU MUST GIVE CONCISE ANSWERES, LIST WHERE NEEDED, BRIEFLY EXPLAIN IF NEEDED, COMPOSE IN A SHORT SENTENCE OR TWO, ONLY ELABORATE IF TOLD TO.\n\nYour concise summary will be the final output provided to the user.\n\n\nIf you're retrieving the address, only return:\nRevenue House, Number 12 Sokode Crescent, Wuse Zone 5, Abuja\n\nIf you are ever returning the FIRS website or mentioning it in the return case of an address. only return https://www.firs.gov.ng/"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1300,
+        140
+      ],
+      "id": "a27f4176-93ae-4e7e-acbd-e50a25768345",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "firs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        940,
+        740
+      ],
+      "id": "c85d4b66-5fae-48ae-939d-1a307ab311bf",
+      "name": "Webhook1",
+      "webhookId": "78ac0749-c277-4aec-aa87-5aeb722cc39a"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1800,
+        740
+      ],
+      "id": "4d61d1d0-c74f-4470-acba-31a69aa9b869",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "## Anchor Insurance",
+        "height": 620,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c47021e0-9e70-4189-99eb-0788be8661c4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Insert Document Into Supabase",
+        "height": 620,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        680
+      ],
+      "id": "7d9fb46c-2b03-4987-bd70-015912c81ee1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## FIRS",
+        "height": 740,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        840,
+        660
+      ],
+      "id": "2be0a2e0-d8cf-4831-b1da-0606508b5168",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.args.question }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "typeVersion": 1.4,
+      "position": [
+        1240,
+        740
+      ],
+      "id": "0fa7f752-d54d-4c3d-b89f-f9ff8947d4a2",
+      "name": "Question and Answer Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1180,
+        960
+      ],
+      "id": "4dce9175-71d9-4fba-964b-1b8f57b44092",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        940
+      ],
+      "id": "26b3dc78-1a26-4e21-9544-ebbc69e45cfe",
+      "name": "Vector Store Retriever"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "firs",
+          "mode": "list",
+          "cachedResultName": "firs"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        1060
+      ],
+      "id": "82aebcae-f0b8-4621-999a-24a4ea639c8f",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "JvDrQfB61jQrOy35",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -540,
+        1280
+      ],
+      "id": "84354f7b-72cb-467f-9d92-fe7fa4a36dd4",
+      "name": "Embeddings OpenAI4",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        1280
+      ],
+      "id": "f7055dda-960d-4453-8206-7304363e639a",
+      "name": "Default Data Loader1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        1500
+      ],
+      "id": "dda44f6b-73ce-4212-bd00-b8d11dc6fd76",
+      "name": "Recursive Character Text Splitter1"
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "firs",
+          "mode": "list",
+          "cachedResultName": "firs"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        1120
+      ],
+      "id": "c5496ab5-b449-4962-853b-57d334260b6c",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "JvDrQfB61jQrOy35",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1500,
+        1260
+      ],
+      "id": "3e42fc63-023b-4d67-b5ba-4599e67c6a39",
+      "name": "Embeddings OpenAI5",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-2024-11-20",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-2024-11-20"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        340
+      ],
+      "id": "69eb623f-e151-4d86-b0f1-2c3c2c14aa2f",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "firs",
+        "toolDescription": "Use this to get any information about Federal Inland Revenue Service. Or any information regarding tax.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "firs",
+          "mode": "list",
+          "cachedResultName": "firs"
+        },
+        "topK": 10,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        420
+      ],
+      "id": "e61f7f9c-26e3-4ff7-bee6-c64de5d1f914",
+      "name": "Pinecone Vector Store2",
+      "credentials": {
+        "pineconeApi": {
+          "id": "JvDrQfB61jQrOy35",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1420,
+        520
+      ],
+      "id": "4373198c-b6a3-4550-b2d4-af6ce7fe842c",
+      "name": "Embeddings OpenAI3",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        760
+      ],
+      "id": "cab6b400-b152-4b40-b1a8-d9a5055ceada",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Extract all the data in this FAQ.\n---\nOutput the FAQ in this format:\n\nFAQ\n1. Question: [the question]\nAnswer: [the corresponding answer]\n\n2. ...\n---\nFAQ",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        300,
+        1580
+      ],
+      "id": "fd3f8521-0837-4c11-bfbd-c2a17af9febb",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "GY9rEyWsUn8DJC96",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1EUNqbMRffyf-L8ueo_SymE55NMEqgRaD",
+          "mode": "list",
+          "cachedResultName": "FAQ.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1EUNqbMRffyf-L8ueo_SymE55NMEqgRaD/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        100,
+        1580
+      ],
+      "id": "197ad6fd-a20d-4a36-b97e-e42b40f98541",
+      "name": "Google Drive1",
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI4": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI5": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.verstandai.xyz",
+            "user-agent": "axios/1.7.7",
+            "content-length": "1717",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.verstandai.xyz",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "09092287a8e2",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1741268056878,d=f12767b34deecde78d4322b582bc74f5a5b1a85f11bc36af4df0e4ae2520212c"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "playground",
+              "call_type": "web_call",
+              "retell_llm_dynamic_variables": {},
+              "transcript": "Agent: \nUser: hell\nAgent: Hello! How can I assist you today?\nUser: who is the ceo\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "",
+                  "words": []
+                },
+                {
+                  "role": "user",
+                  "content": "hell",
+                  "words": [
+                    {
+                      "word": "hell",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hello! How can I assist you today?",
+                  "words": [
+                    {
+                      "word": "Hello! ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "How ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "can ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "I ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "assist ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "you ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "today?",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "who is the ceo",
+                  "words": [
+                    {
+                      "word": "who ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "is ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "the ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "ceo",
+                      "start": 3,
+                      "end": 3
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "",
+                  "words": []
+                },
+                {
+                  "role": "user",
+                  "content": "hell",
+                  "words": [
+                    {
+                      "word": "hell",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hello! How can I assist you today?",
+                  "words": [
+                    {
+                      "word": "Hello! ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "How ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "can ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "I ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "assist ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "you ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "today?",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "who is the ceo",
+                  "words": [
+                    {
+                      "word": "who ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "is ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "the ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "ceo",
+                      "start": 3,
+                      "end": 3
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "be344593a930903e",
+                  "name": "retrieve-information",
+                  "arguments": "{\"question\":\"Who is the CEO?\"}"
+                }
+              ],
+              "latency": {}
+            },
+            "name": "retrieve-information",
+            "args": {
+              "question": "Who is the CEO of Anchor Insurance and what is their background?"
+            }
+          },
+          "webhookUrl": "https://n8n.verstandai.xyz/webhook/trieve",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.verstandai.xyz",
+            "user-agent": "axios/1.7.7",
+            "content-length": "1717",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.verstandai.xyz",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "09092287a8e2",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1741268056878,d=f12767b34deecde78d4322b582bc74f5a5b1a85f11bc36af4df0e4ae2520212c"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "playground",
+              "call_type": "web_call",
+              "retell_llm_dynamic_variables": {},
+              "transcript": "Agent: \nUser: hell\nAgent: Hello! How can I assist you today?\nUser: who is the ceo\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "",
+                  "words": []
+                },
+                {
+                  "role": "user",
+                  "content": "hell",
+                  "words": [
+                    {
+                      "word": "hell",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hello! How can I assist you today?",
+                  "words": [
+                    {
+                      "word": "Hello! ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "How ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "can ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "I ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "assist ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "you ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "today?",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "who is the ceo",
+                  "words": [
+                    {
+                      "word": "who ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "is ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "the ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "ceo",
+                      "start": 3,
+                      "end": 3
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "",
+                  "words": []
+                },
+                {
+                  "role": "user",
+                  "content": "hell",
+                  "words": [
+                    {
+                      "word": "hell",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hello! How can I assist you today?",
+                  "words": [
+                    {
+                      "word": "Hello! ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "How ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "can ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "I ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "assist ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "you ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "today?",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "who is the ceo",
+                  "words": [
+                    {
+                      "word": "who ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "is ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "the ",
+                      "start": 3,
+                      "end": 3
+                    },
+                    {
+                      "word": "ceo",
+                      "start": 3,
+                      "end": 3
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "be344593a930903e",
+                  "name": "retrieve-information",
+                  "arguments": "{\"question\":\"Who is the CEO?\"}"
+                }
+              ],
+              "latency": {}
+            },
+            "name": "retrieve-information",
+            "args": {
+              "question": "what is the process for remitting pay as you earn"
+            }
+          },
+          "webhookUrl": "https://n8n.verstandai.xyz/webhook/trieve",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "72419909-afe3-4817-9a71-41fae7e68c5b",
+  "triggerCount": 2,
+  "tags": []
+}
