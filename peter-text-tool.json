@@ -1,0 +1,4071 @@
+{
+  "createdAt": "2025-05-18T00:55:41.365Z",
+  "updatedAt": "2025-05-23T00:36:08.000Z",
+  "id": "ITV318qQTdzuM7rO",
+  "name": "Peter Text Tool",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "resend",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        940
+      ],
+      "id": "6d6e632e-d97a-418e-a317-6343e6aeeb75",
+      "name": "Webhook",
+      "webhookId": "459c940b-f819-44e5-a389-3bae6ef08445"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/contacts/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Version",
+              "value": "2021-07-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"locationId\": \"3KfhQQS2p5nSJvGdxTzs\",\n  \"pageLimit\": 1,\n  \"filters\": [\n    {\n       \"field\": \"phone\",\n       \"operator\": \"eq\",\n       \"value\": \"{{ $json.body.args.phone_number }}\"\n    } \n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -180,
+        940
+      ],
+      "id": "51da3888-588f-4077-ac4b-ad507575f13a",
+      "name": "Get Contact"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Welcome (day 1)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "af57cf89-e396-407a-aad5-096a0ceab807"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Welcome (day 1)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fddd4ca7-b673-4fb7-992d-1cdf2fc9bc10",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 1 (day 8)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 1 (day 8)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3e95c169-c564-4afd-a26d-b393ce848521",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 2 (day 15)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 2 (day 15)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d43576d1-5499-4da4-83aa-50b3da08fcc3",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 3 (day 22)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 3 (day 22)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5ebe20f0-28d6-4157-be30-77c67987ba07",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 4 (day 29)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 4 (day 29)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ecf15e11-7b99-405c-9319-7a152fbf4ff7",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 5 (day 36)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 5 (day 36)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b279fab8-becc-44f1-8853-1692bd41185b",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 6 (day 42)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 6 (day 42)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8eb14129-7ed2-4fd9-918a-463002932647",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 7 (day 49)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 7 (day 49)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "daf113e3-fdc0-4fae-873b-540b0db641a1",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 8 (day 56)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 8 (day 56)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1020,
+        -120
+      ],
+      "id": "7e7c80ac-697d-4484-b3bb-bd70b878c167",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Welcome to Live Well Cumming! I'm Amy from Live Well Cumming, your 24/7 support. Explore our resources or call with me questions: https://bit.ly/42K6HLX\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        -660
+      ],
+      "id": "f1e60f5a-72c1-4378-80ee-be2ebfe09715",
+      "name": "Send Message"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 1: Think about  maximizing your results and what to expect along the way. Nutrition & workouts will help your progress. https://bit.ly/3RskK3q\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        -460
+      ],
+      "id": "907105b9-9897-4d1a-81f5-4e9c340472ad",
+      "name": "Send Message1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 2 Get your workouts in full swing.  Use the LWC App to weigh in,  manage your workouts &  milestones. Learn more here. https://bit.ly/4hNXUxW\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        -260
+      ],
+      "id": "574f572c-10a2-46e7-bdc7-42d3da1f10a5",
+      "name": "Send Message2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 3. Don't think—just DO with TrainerOnDemand.  It may also be time to give your heart rate monitor a little love. https://bit.ly/4iNoitp\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        -60
+      ],
+      "id": "5e619f26-b126-4c1e-a44a-6712e576b124",
+      "name": "Send Message3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"One month in. Your five week labs are coming up next week. Here is a link to what you need to know before you get tested. https://bit.ly/3Y6esdz\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        140
+      ],
+      "id": "4aae2067-77a4-411f-9f73-f4d1fc560ee3",
+      "name": "Send Message4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Anti-aging peptides can be a great addition to your therapy. Check out what we have and consider discussing at your next appointment. https://bit.ly/42b9de4\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        340
+      ],
+      "id": "7784568a-1aa1-4e46-a15d-dc6c3e8d26fb",
+      "name": "Send Message5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Labs are back. Time to review. Are we doing everything that we need to optimize health? What adjustments are needed? https://bit.ly/3DLnrKy\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        540
+      ],
+      "id": "f3cae32f-1a70-4720-84bc-7481b6b8e802",
+      "name": "Send Message6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Feeling more energy, stamina, and getting better sleep? Your personal journey is a process. Have you checked out Vitality 365? https://bit.ly/41L0vUO\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        760
+      ],
+      "id": "b457a8fe-d47d-449a-abd9-59c47ecc279b",
+      "name": "Send Message7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"2 months in, You should be feeling great. If not, it is time to check in with our coaches again to tweak your plan. Schedule time now. https://bit.ly/4j6zoJE\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        960
+      ],
+      "id": "9d8e5e7c-49f6-437f-af0b-e20e9afa3e5c",
+      "name": "Send Message8"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.args.gender }}",
+                    "rightValue": "male",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b41dac07-8415-4205-9a32-e23ae4bfa0be"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "male"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1ef070ee-97d0-4619-8578-9d71d94a4a1e",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.gender }}",
+                    "rightValue": "Male",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Male"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e6010cff-d094-4cfe-a982-1879bbf77a1e",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.gender }}",
+                    "rightValue": "female",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "female"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d930cc43-2c79-42c3-a9d6-1f8bc4205f10",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.gender }}",
+                    "rightValue": "Female",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "=Female"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        160,
+        940
+      ],
+      "id": "1e99522a-c3ef-45d4-b4e0-a7594e1b6c2b",
+      "name": "Gender"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Welcome (day 1)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "af57cf89-e396-407a-aad5-096a0ceab807"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Welcome (day 1)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fddd4ca7-b673-4fb7-992d-1cdf2fc9bc10",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 1 (day 8)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 1 (day 8)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3e95c169-c564-4afd-a26d-b393ce848521",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 2 (day 15)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 2 (day 15)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d43576d1-5499-4da4-83aa-50b3da08fcc3",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 3 (day 22)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 3 (day 22)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5ebe20f0-28d6-4157-be30-77c67987ba07",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 4 (day 29)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 4 (day 29)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ecf15e11-7b99-405c-9319-7a152fbf4ff7",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 5 (day 36)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 5 (day 36)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b279fab8-becc-44f1-8853-1692bd41185b",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 6 (day 42)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 6 (day 42)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8eb14129-7ed2-4fd9-918a-463002932647",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 7 (day 49)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 7 (day 49)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "daf113e3-fdc0-4fae-873b-540b0db641a1",
+                    "leftValue": "={{ $('Webhook').item.json.body.args.stage }}",
+                    "rightValue": "Week 8 (day 56)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Week 8 (day 56)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1020,
+        1740
+      ],
+      "id": "5a015f39-5f1a-493b-b1be-6e1cdc108501",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Welcome to Live Well Cumming! I'm Amy from Live Well Cumming, your 24/7 support. Explore our resources or call with me questions: https://bit.ly/42K6HLX\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        1280
+      ],
+      "id": "c106462b-a2b2-4447-8ef2-7cedd9b11306",
+      "name": "Send Message9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 1: Think about  maximizing your results and what to expect along the way. Nutrition & workouts will help your progress. https://bit.ly/3RskK3q\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        1480
+      ],
+      "id": "d9b6407b-cfeb-4dbb-bf43-3604997e924e",
+      "name": "Send Message10"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 2 Get your workouts in full swing.  Use the LWC App to weigh in,  manage your workouts &  milestones. Learn more here. https://bit.ly/4hNXUxW\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        1680
+      ],
+      "id": "a1b5313a-7519-44a4-9646-9511a236485c",
+      "name": "Send Message11"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Week 3. Don't think—just DO with TrainerOnDemand.  It may also be time to give your heart rate monitor a little love. https://bit.ly/4iNoitp\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        1880
+      ],
+      "id": "68cdf58c-a1dc-47a8-863b-549dc1941e3f",
+      "name": "Send Message12"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"One month in. Your five week labs are coming up next week. Here is a link to what you need to know before you get tested. https://bit.ly/3Y6esdz\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        2080
+      ],
+      "id": "2d7bd79e-a151-4f80-b767-5d0d34f3ab98",
+      "name": "Send Message13"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Anti-aging peptides can be a great addition to your therapy. Check out what we have and consider discussing at your next appointment. https://bit.ly/42b9de4\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        2280
+      ],
+      "id": "f11cb4fe-abc4-4697-bfec-5aaecff05345",
+      "name": "Send Message14"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Labs are back. Time to review. Are we doing everything that we need to optimize health? What adjustments are needed? https://bit.ly/3DLnrKy\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        2480
+      ],
+      "id": "fcc7c6c7-b0f1-4427-8f1a-93b82a4599bd",
+      "name": "Send Message15"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"Feeling more energy, stamina, and getting better sleep? Your personal journey is a process. Have you checked out Vitality 365? https://bit.ly/41L0vUO\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        2700
+      ],
+      "id": "d499d0f1-4a08-453b-8910-99bc35e95a85",
+      "name": "Send Message16"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer pit-eedaaae0-90c1-4e41-a6c1-ab32ebcfe5fe"
+            },
+            {
+              "name": "Version",
+              "value": "2021-04-15"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"SMS\",\n  \"contactId\": \"{{ $json.contacts[0].id }}\",\n  \"message\": \"2 months in, You should be feeling great. If not, it is time to check in with our coaches again to tweak your plan. Schedule time now. https://bit.ly/4j6zoJE\",\n  \"fromNumber\": \"+14702357670\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1720,
+        2900
+      ],
+      "id": "8868f4fd-4af6-4e24-b812-66b4852ef5da",
+      "name": "Send Message17"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contact": {
+      "main": [
+        [
+          {
+            "node": "Gender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gender": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Send Message9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message12",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message13",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message14",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message15",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message16",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message17",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.verstandai.agency",
+            "user-agent": "axios/1.7.7",
+            "content-length": "33772",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.verstandai.agency",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7366fc3f55a8",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1747949503480,d=0e2e663eec885b13e8f11f2e551fb2ccbf4925605d8d1e77a37503d70cdef163"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "call_9d2f2b7b9c657b53c86632023b3",
+              "call_type": "phone_call",
+              "agent_id": "agent_6b9bd502666eca676babdaf960",
+              "retell_llm_dynamic_variables": {
+                "stage": "Week 2 (day 15)",
+                "call_script": "Agent: Hey {{client_name}}, it’s Amy from Liv Well Cumming, your hormone lifestyle coach. Week 2 is here, and it’s time to dial in your workouts. Agent: I’m excited to chat about the LWC Fitness App and your heart rate monitor. like any great tool, the more you use it, the better you will get at it. Agent: And if you haven’t, be sure to activate your free coupon for full access. Agent: One of our favorite features is Fitness Milestones. We encourage you to look at your Fitness Beyond the Scale to weigh in and improve things like your 1 mile time, your pushups, and planks. Agent: Everything you need is available on the website at LWC resources. Agent: Even if technology in fitness is not for you, we still encourage you to look at Scale to weigh in weekly and keep your goals front and center. Those links are in your texts and emails. Agent: Have you tried a workout yet? I’d love to know how it’s going or if you have any other questions.",
+                "client_name": "Melissa",
+                "text_message": "Week 2 Get your workouts in full swing.  Use the LWC App to weigh in,  manage your workouts &  milestones. Learn more here. https://bit.ly/4hNXUxW"
+              },
+              "call_status": "ongoing",
+              "start_timestamp": 1747949417452,
+              "transcript": "User: Hello?\nAgent: Hi Melissa, it’s Amy from Liv Well Cumming, your hormone lifestyle coach. How are you doing today?\nUser: I'm good. How are you?\nAgent: I’m doing great, thanks for asking! I wanted to check in with you since you’re around day fifteen of your program. How’s everything going so far?\nUser: Going very well.\nAgent: That’s awesome to hear, Melissa! Since you’re in the groove, I wanted to chat about dialing in your workouts. Have you had a chance to try any workouts yet?\nUser: I have been walking.\nAgent: That’s a fantastic start, Melissa! Walking is such a great way to ease into things and get your body moving. Have you been tracking your walks or using the LWC Fitness App yet?\nUser: I have not\nUser: figured out the app yet, but I am using my Apple Watch to track my step.\nAgent: That’s great that you’re using your Apple Watch to track your steps—it’s such a handy tool! The LWC Fitness App can actually complement that really well. It’s designed to help you set specific goals, track your progress, and even measure milestones like your one-mile time or how long you can hold a plank.I sent you a text earlier with a link to learn more about the app and how to activate your free coupon for full access. Did you happen to see that?\nUser: I did not.\nAgent: No worries, Melissa! I’ll resend the text to \n",
+              "transcript_object": [
+                {
+                  "role": "user",
+                  "content": "Hello?",
+                  "words": [
+                    {
+                      "word": "Hello?",
+                      "start": 1.696,
+                      "end": 1.936
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hi Melissa, it’s Amy from Liv Well Cumming, your hormone lifestyle coach. How are you doing today?",
+                  "words": [
+                    {
+                      "word": "Hi ",
+                      "start": 2.029,
+                      "end": 2.25
+                    },
+                    {
+                      "word": "Melissa, ",
+                      "start": 2.25,
+                      "end": 2.656
+                    },
+                    {
+                      "word": "it’s ",
+                      "start": 2.656,
+                      "end": 2.83
+                    },
+                    {
+                      "word": "Amy ",
+                      "start": 2.83,
+                      "end": 3.085
+                    },
+                    {
+                      "word": "from ",
+                      "start": 3.085,
+                      "end": 3.26
+                    },
+                    {
+                      "word": "Liv ",
+                      "start": 3.26,
+                      "end": 3.422
+                    },
+                    {
+                      "word": "Well ",
+                      "start": 3.422,
+                      "end": 3.608
+                    },
+                    {
+                      "word": "Cumming, ",
+                      "start": 3.608,
+                      "end": 3.898
+                    },
+                    {
+                      "word": "your ",
+                      "start": 3.898,
+                      "end": 4.037
+                    },
+                    {
+                      "word": "hormone ",
+                      "start": 4.037,
+                      "end": 4.351
+                    },
+                    {
+                      "word": "lifestyle ",
+                      "start": 4.351,
+                      "end": 4.827
+                    },
+                    {
+                      "word": "coach.",
+                      "start": 4.827,
+                      "end": 5.5
+                    },
+                    {
+                      "word": " How ",
+                      "start": 5.546333251953125,
+                      "end": 5.709333251953125
+                    },
+                    {
+                      "word": "are ",
+                      "start": 5.709333251953125,
+                      "end": 5.848333251953125
+                    },
+                    {
+                      "word": "you ",
+                      "start": 5.848333251953125,
+                      "end": 5.964333251953125
+                    },
+                    {
+                      "word": "doing ",
+                      "start": 5.964333251953125,
+                      "end": 6.197333251953125
+                    },
+                    {
+                      "word": "today?",
+                      "start": 6.197333251953125,
+                      "end": 6.707333251953125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I'm good. How are you?",
+                  "words": [
+                    {
+                      "word": "I'm ",
+                      "start": 7.906,
+                      "end": 8.306
+                    },
+                    {
+                      "word": "good. ",
+                      "start": 8.306,
+                      "end": 8.626
+                    },
+                    {
+                      "word": "How ",
+                      "start": 8.626,
+                      "end": 8.7859995
+                    },
+                    {
+                      "word": "are ",
+                      "start": 8.7859995,
+                      "end": 8.946
+                    },
+                    {
+                      "word": "you?",
+                      "start": 8.946,
+                      "end": 9.026
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "I’m doing great, thanks for asking! I wanted to check in with you since you’re around day fifteen of your program. How’s everything going so far?",
+                  "words": [
+                    {
+                      "word": "I’m ",
+                      "start": 11.272,
+                      "end": 11.47
+                    },
+                    {
+                      "word": "doing ",
+                      "start": 11.47,
+                      "end": 11.771
+                    },
+                    {
+                      "word": "great, ",
+                      "start": 11.771,
+                      "end": 12.073
+                    },
+                    {
+                      "word": "thanks ",
+                      "start": 12.073,
+                      "end": 12.329
+                    },
+                    {
+                      "word": "for ",
+                      "start": 12.329,
+                      "end": 12.48
+                    },
+                    {
+                      "word": "asking!",
+                      "start": 12.48,
+                      "end": 13.234
+                    },
+                    {
+                      "word": " I ",
+                      "start": 13.28025,
+                      "end": 13.44325
+                    },
+                    {
+                      "word": "wanted ",
+                      "start": 13.44325,
+                      "end": 13.74525
+                    },
+                    {
+                      "word": "to ",
+                      "start": 13.74525,
+                      "end": 13.83825
+                    },
+                    {
+                      "word": "check ",
+                      "start": 13.83825,
+                      "end": 14.08225
+                    },
+                    {
+                      "word": "in ",
+                      "start": 14.08225,
+                      "end": 14.19825
+                    },
+                    {
+                      "word": "with ",
+                      "start": 14.19825,
+                      "end": 14.37225
+                    },
+                    {
+                      "word": "you ",
+                      "start": 14.37225,
+                      "end": 14.52325
+                    },
+                    {
+                      "word": "since ",
+                      "start": 14.52325,
+                      "end": 14.74325
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 14.74325,
+                      "end": 14.94125
+                    },
+                    {
+                      "word": "around ",
+                      "start": 14.94125,
+                      "end": 15.25425
+                    },
+                    {
+                      "word": "day ",
+                      "start": 15.25425,
+                      "end": 15.47525
+                    },
+                    {
+                      "word": "fifteen ",
+                      "start": 15.47525,
+                      "end": 15.97425
+                    },
+                    {
+                      "word": "of ",
+                      "start": 15.97425,
+                      "end": 16.07825
+                    },
+                    {
+                      "word": "your ",
+                      "start": 16.07825,
+                      "end": 16.22925
+                    },
+                    {
+                      "word": "program.",
+                      "start": 16.22925,
+                      "end": 16.94925
+                    },
+                    {
+                      "word": " How’s ",
+                      "start": 16.995458251953124,
+                      "end": 17.170458251953125
+                    },
+                    {
+                      "word": "everything ",
+                      "start": 17.170458251953125,
+                      "end": 17.460458251953124
+                    },
+                    {
+                      "word": "going ",
+                      "start": 17.460458251953124,
+                      "end": 17.680458251953127
+                    },
+                    {
+                      "word": "so ",
+                      "start": 17.680458251953127,
+                      "end": 17.843458251953123
+                    },
+                    {
+                      "word": "far?",
+                      "start": 17.843458251953123,
+                      "end": 18.296458251953126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Going very well.",
+                  "words": [
+                    {
+                      "word": "Going ",
+                      "start": 19.665999999999997,
+                      "end": 20.145999999999997
+                    },
+                    {
+                      "word": "very ",
+                      "start": 20.555999,
+                      "end": 20.795999
+                    },
+                    {
+                      "word": "well.",
+                      "start": 20.795999,
+                      "end": 21.035998999999997
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s awesome to hear, Melissa! Since you’re in the groove, I wanted to chat about dialing in your workouts. Have you had a chance to try any workouts yet?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 22.765,
+                      "end": 23.09
+                    },
+                    {
+                      "word": "awesome ",
+                      "start": 23.09,
+                      "end": 23.415
+                    },
+                    {
+                      "word": "to ",
+                      "start": 23.415,
+                      "end": 23.52
+                    },
+                    {
+                      "word": "hear, ",
+                      "start": 23.52,
+                      "end": 23.729
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 23.729,
+                      "end": 24.414
+                    },
+                    {
+                      "word": " Since ",
+                      "start": 24.448708251953125,
+                      "end": 24.738708251953124
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 24.738708251953124,
+                      "end": 24.935708251953123
+                    },
+                    {
+                      "word": "in ",
+                      "start": 24.935708251953123,
+                      "end": 25.028708251953127
+                    },
+                    {
+                      "word": "the ",
+                      "start": 25.028708251953127,
+                      "end": 25.133708251953124
+                    },
+                    {
+                      "word": "groove, ",
+                      "start": 25.133708251953124,
+                      "end": 25.562708251953126
+                    },
+                    {
+                      "word": "I ",
+                      "start": 25.562708251953126,
+                      "end": 25.713708251953125
+                    },
+                    {
+                      "word": "wanted ",
+                      "start": 25.713708251953125,
+                      "end": 26.015708251953125
+                    },
+                    {
+                      "word": "to ",
+                      "start": 26.015708251953125,
+                      "end": 26.108708251953125
+                    },
+                    {
+                      "word": "chat ",
+                      "start": 26.108708251953125,
+                      "end": 26.387708251953125
+                    },
+                    {
+                      "word": "about ",
+                      "start": 26.387708251953125,
+                      "end": 26.631708251953125
+                    },
+                    {
+                      "word": "dialing ",
+                      "start": 26.631708251953125,
+                      "end": 27.025708251953127
+                    },
+                    {
+                      "word": "in ",
+                      "start": 27.025708251953127,
+                      "end": 27.130708251953124
+                    },
+                    {
+                      "word": "your ",
+                      "start": 27.130708251953124,
+                      "end": 27.292708251953126
+                    },
+                    {
+                      "word": "workouts.",
+                      "start": 27.292708251953126,
+                      "end": 28.175708251953125
+                    },
+                    {
+                      "word": " Have ",
+                      "start": 28.187333251953124,
+                      "end": 28.384333251953127
+                    },
+                    {
+                      "word": "you ",
+                      "start": 28.384333251953127,
+                      "end": 28.488333251953126
+                    },
+                    {
+                      "word": "had ",
+                      "start": 28.488333251953126,
+                      "end": 28.628333251953126
+                    },
+                    {
+                      "word": "a ",
+                      "start": 28.628333251953126,
+                      "end": 28.709333251953126
+                    },
+                    {
+                      "word": "chance ",
+                      "start": 28.709333251953126,
+                      "end": 29.023333251953126
+                    },
+                    {
+                      "word": "to ",
+                      "start": 29.023333251953126,
+                      "end": 29.139333251953126
+                    },
+                    {
+                      "word": "try ",
+                      "start": 29.139333251953126,
+                      "end": 29.394333251953125
+                    },
+                    {
+                      "word": "any ",
+                      "start": 29.394333251953125,
+                      "end": 29.568333251953124
+                    },
+                    {
+                      "word": "workouts ",
+                      "start": 29.568333251953124,
+                      "end": 29.998333251953124
+                    },
+                    {
+                      "word": "yet?",
+                      "start": 29.998333251953124,
+                      "end": 30.451333251953123
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I have been walking.",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 31.785999999999998,
+                      "end": 32.025999999999996
+                    },
+                    {
+                      "word": "have ",
+                      "start": 32.025999999999996,
+                      "end": 32.266
+                    },
+                    {
+                      "word": "been ",
+                      "start": 32.266,
+                      "end": 32.425999999999995
+                    },
+                    {
+                      "word": "walking.",
+                      "start": 32.425999999999995,
+                      "end": 32.826
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s a fantastic start, Melissa! Walking is such a great way to ease into things and get your body moving. Have you been tracking your walks or using the LWC Fitness App yet?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 34.825,
+                      "end": 35.057
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.057,
+                      "end": 35.127
+                    },
+                    {
+                      "word": "fantastic ",
+                      "start": 35.127,
+                      "end": 35.684
+                    },
+                    {
+                      "word": "start, ",
+                      "start": 35.684,
+                      "end": 36.021
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 36.021,
+                      "end": 36.659
+                    },
+                    {
+                      "word": " Walking ",
+                      "start": 36.7055,
+                      "end": 37.2055
+                    },
+                    {
+                      "word": "is ",
+                      "start": 37.2055,
+                      "end": 37.3325
+                    },
+                    {
+                      "word": "such ",
+                      "start": 37.3325,
+                      "end": 37.5535
+                    },
+                    {
+                      "word": "a ",
+                      "start": 37.5535,
+                      "end": 37.6235
+                    },
+                    {
+                      "word": "great ",
+                      "start": 37.6235,
+                      "end": 37.8665
+                    },
+                    {
+                      "word": "way ",
+                      "start": 37.8665,
+                      "end": 38.0415
+                    },
+                    {
+                      "word": "to ",
+                      "start": 38.0415,
+                      "end": 38.1575
+                    },
+                    {
+                      "word": "ease ",
+                      "start": 38.1575,
+                      "end": 38.4125
+                    },
+                    {
+                      "word": "into ",
+                      "start": 38.4125,
+                      "end": 38.6565
+                    },
+                    {
+                      "word": "things ",
+                      "start": 38.6565,
+                      "end": 38.9585
+                    },
+                    {
+                      "word": "and ",
+                      "start": 38.9585,
+                      "end": 39.0625
+                    },
+                    {
+                      "word": "get ",
+                      "start": 39.0625,
+                      "end": 39.2135
+                    },
+                    {
+                      "word": "your ",
+                      "start": 39.2135,
+                      "end": 39.3535
+                    },
+                    {
+                      "word": "body ",
+                      "start": 39.3535,
+                      "end": 39.6205
+                    },
+                    {
+                      "word": "moving.",
+                      "start": 39.6205,
+                      "end": 40.3285
+                    },
+                    {
+                      "word": " Have ",
+                      "start": 40.37425,
+                      "end": 40.57225
+                    },
+                    {
+                      "word": "you ",
+                      "start": 40.57225,
+                      "end": 40.68825
+                    },
+                    {
+                      "word": "been ",
+                      "start": 40.68825,
+                      "end": 40.85025
+                    },
+                    {
+                      "word": "tracking ",
+                      "start": 40.85025,
+                      "end": 41.26825
+                    },
+                    {
+                      "word": "your ",
+                      "start": 41.26825,
+                      "end": 41.45425
+                    },
+                    {
+                      "word": "walks ",
+                      "start": 41.45425,
+                      "end": 41.89525
+                    },
+                    {
+                      "word": "or ",
+                      "start": 41.89525,
+                      "end": 42.12825
+                    },
+                    {
+                      "word": "using ",
+                      "start": 42.12825,
+                      "end": 42.42925
+                    },
+                    {
+                      "word": "the ",
+                      "start": 42.42925,
+                      "end": 42.54625
+                    },
+                    {
+                      "word": "LWC ",
+                      "start": 42.54625,
+                      "end": 43.02225
+                    },
+                    {
+                      "word": "Fitness ",
+                      "start": 43.02225,
+                      "end": 43.37025
+                    },
+                    {
+                      "word": "App ",
+                      "start": 43.37025,
+                      "end": 43.56725
+                    },
+                    {
+                      "word": "yet?",
+                      "start": 43.56725,
+                      "end": 44.04325
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I have not",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 45.236,
+                      "end": 45.556
+                    },
+                    {
+                      "word": "have ",
+                      "start": 45.556,
+                      "end": 45.796
+                    },
+                    {
+                      "word": "not",
+                      "start": 45.796,
+                      "end": 46.036
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "figured out the app yet, but I am using my Apple Watch to track my step.",
+                  "words": [
+                    {
+                      "word": "figured ",
+                      "start": 46.826,
+                      "end": 47.146
+                    },
+                    {
+                      "word": "out ",
+                      "start": 47.146,
+                      "end": 47.385999999999996
+                    },
+                    {
+                      "word": "the ",
+                      "start": 47.385999999999996,
+                      "end": 47.626
+                    },
+                    {
+                      "word": "app ",
+                      "start": 47.626,
+                      "end": 47.866
+                    },
+                    {
+                      "word": "yet, ",
+                      "start": 47.866,
+                      "end": 48.505998
+                    },
+                    {
+                      "word": "but ",
+                      "start": 48.505998,
+                      "end": 48.826
+                    },
+                    {
+                      "word": "I ",
+                      "start": 48.826,
+                      "end": 49.065999999999995
+                    },
+                    {
+                      "word": "am ",
+                      "start": 49.065999999999995,
+                      "end": 49.226
+                    },
+                    {
+                      "word": "using ",
+                      "start": 49.226,
+                      "end": 49.626
+                    },
+                    {
+                      "word": "my ",
+                      "start": 49.626,
+                      "end": 49.786
+                    },
+                    {
+                      "word": "Apple ",
+                      "start": 49.786,
+                      "end": 50.186
+                    },
+                    {
+                      "word": "Watch ",
+                      "start": 50.186,
+                      "end": 50.425999999999995
+                    },
+                    {
+                      "word": "to ",
+                      "start": 50.525999999999996,
+                      "end": 50.766
+                    },
+                    {
+                      "word": "track ",
+                      "start": 50.766,
+                      "end": 51.005998
+                    },
+                    {
+                      "word": "my ",
+                      "start": 51.005998,
+                      "end": 51.165997999999995
+                    },
+                    {
+                      "word": "step.",
+                      "start": 51.165997999999995,
+                      "end": 51.406
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s great that you’re using your Apple Watch to track your steps—it’s such a handy tool! The LWC Fitness App can actually complement that really well. It’s designed to help you set specific goals, track your progress, and even measure milestones like your one-mile time or how long you can hold a plank.I sent you a text earlier with a link to learn more about the app and how to activate your free coupon for full access. Did you happen to see that?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 53.666,
+                      "end": 53.933
+                    },
+                    {
+                      "word": "great ",
+                      "start": 53.933,
+                      "end": 54.235
+                    },
+                    {
+                      "word": "that ",
+                      "start": 54.235,
+                      "end": 54.421
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 54.421,
+                      "end": 54.641
+                    },
+                    {
+                      "word": "using ",
+                      "start": 54.641,
+                      "end": 54.873
+                    },
+                    {
+                      "word": "your ",
+                      "start": 54.873,
+                      "end": 55.036
+                    },
+                    {
+                      "word": "Apple ",
+                      "start": 55.036,
+                      "end": 55.326
+                    },
+                    {
+                      "word": "Watch ",
+                      "start": 55.326,
+                      "end": 55.605
+                    },
+                    {
+                      "word": "to ",
+                      "start": 55.605,
+                      "end": 55.756
+                    },
+                    {
+                      "word": "track ",
+                      "start": 55.756,
+                      "end": 56.092
+                    },
+                    {
+                      "word": "your ",
+                      "start": 56.092,
+                      "end": 56.255
+                    },
+                    {
+                      "word": "steps—it’s ",
+                      "start": 56.255,
+                      "end": 57.149
+                    },
+                    {
+                      "word": "such ",
+                      "start": 57.149,
+                      "end": 57.428
+                    },
+                    {
+                      "word": "a ",
+                      "start": 57.428,
+                      "end": 57.509
+                    },
+                    {
+                      "word": "handy ",
+                      "start": 57.509,
+                      "end": 57.846
+                    },
+                    {
+                      "word": "tool!",
+                      "start": 57.846,
+                      "end": 58.426
+                    },
+                    {
+                      "word": " The ",
+                      "start": 58.438083251953124,
+                      "end": 58.681083251953126
+                    },
+                    {
+                      "word": "LWC ",
+                      "start": 58.681083251953126,
+                      "end": 59.39008325195312
+                    },
+                    {
+                      "word": "Fitness ",
+                      "start": 59.39008325195312,
+                      "end": 59.78408325195313
+                    },
+                    {
+                      "word": "App ",
+                      "start": 59.78408325195313,
+                      "end": 59.97008325195313
+                    },
+                    {
+                      "word": "can ",
+                      "start": 59.97008325195313,
+                      "end": 60.14408325195313
+                    },
+                    {
+                      "word": "actually ",
+                      "start": 60.14408325195313,
+                      "end": 60.63208325195313
+                    },
+                    {
+                      "word": "complement ",
+                      "start": 60.63208325195313,
+                      "end": 61.212083251953125
+                    },
+                    {
+                      "word": "that ",
+                      "start": 61.212083251953125,
+                      "end": 61.43308325195313
+                    },
+                    {
+                      "word": "really ",
+                      "start": 61.43308325195313,
+                      "end": 61.746083251953124
+                    },
+                    {
+                      "word": "well.",
+                      "start": 61.746083251953124,
+                      "end": 62.23408325195312
+                    },
+                    {
+                      "word": " It’s ",
+                      "start": 62.25716674804688,
+                      "end": 62.54716674804688
+                    },
+                    {
+                      "word": "designed ",
+                      "start": 62.54716674804688,
+                      "end": 62.977166748046876
+                    },
+                    {
+                      "word": "to ",
+                      "start": 62.977166748046876,
+                      "end": 63.08216674804687
+                    },
+                    {
+                      "word": "help ",
+                      "start": 63.08216674804687,
+                      "end": 63.29116674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 63.29116674804688,
+                      "end": 63.41816674804687
+                    },
+                    {
+                      "word": "set ",
+                      "start": 63.41816674804687,
+                      "end": 63.65016674804688
+                    },
+                    {
+                      "word": "specific ",
+                      "start": 63.65016674804688,
+                      "end": 64.20816674804688
+                    },
+                    {
+                      "word": "goals, ",
+                      "start": 64.20816674804688,
+                      "end": 64.82316674804687
+                    },
+                    {
+                      "word": "track ",
+                      "start": 64.82316674804687,
+                      "end": 65.29916674804687
+                    },
+                    {
+                      "word": "your ",
+                      "start": 65.29916674804687,
+                      "end": 65.46216674804687
+                    },
+                    {
+                      "word": "progress, ",
+                      "start": 65.46216674804687,
+                      "end": 66.08916674804688
+                    },
+                    {
+                      "word": "and ",
+                      "start": 66.08916674804688,
+                      "end": 66.37916674804687
+                    },
+                    {
+                      "word": "even ",
+                      "start": 66.37916674804687,
+                      "end": 66.72716674804687
+                    },
+                    {
+                      "word": "measure ",
+                      "start": 66.72716674804687,
+                      "end": 67.06416674804687
+                    },
+                    {
+                      "word": "milestones ",
+                      "start": 67.06416674804687,
+                      "end": 67.73716674804687
+                    },
+                    {
+                      "word": "like ",
+                      "start": 67.73716674804687,
+                      "end": 67.93416674804688
+                    },
+                    {
+                      "word": "your ",
+                      "start": 67.93416674804688,
+                      "end": 68.14316674804688
+                    },
+                    {
+                      "word": "one-mile ",
+                      "start": 68.14316674804688,
+                      "end": 68.77016674804688
+                    },
+                    {
+                      "word": "time ",
+                      "start": 68.77016674804688,
+                      "end": 69.23516674804688
+                    },
+                    {
+                      "word": "or ",
+                      "start": 69.23516674804688,
+                      "end": 69.39716674804687
+                    },
+                    {
+                      "word": "how ",
+                      "start": 69.39716674804687,
+                      "end": 69.58316674804688
+                    },
+                    {
+                      "word": "long ",
+                      "start": 69.58316674804688,
+                      "end": 69.80416674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 69.80416674804688,
+                      "end": 69.90816674804688
+                    },
+                    {
+                      "word": "can ",
+                      "start": 69.90816674804688,
+                      "end": 70.04816674804688
+                    },
+                    {
+                      "word": "hold ",
+                      "start": 70.04816674804688,
+                      "end": 70.24516674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 70.24516674804687,
+                      "end": 70.33816674804687
+                    },
+                    {
+                      "word": "plank.",
+                      "start": 70.33816674804687,
+                      "end": 70.91816674804687
+                    },
+                    {
+                      "word": "I ",
+                      "start": 70.96441674804687,
+                      "end": 71.16241674804688
+                    },
+                    {
+                      "word": "sent ",
+                      "start": 71.16241674804688,
+                      "end": 71.41741674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 71.41741674804688,
+                      "end": 71.54541674804688
+                    },
+                    {
+                      "word": "a ",
+                      "start": 71.54541674804688,
+                      "end": 71.63841674804688
+                    },
+                    {
+                      "word": "text ",
+                      "start": 71.63841674804688,
+                      "end": 72.00941674804687
+                    },
+                    {
+                      "word": "earlier ",
+                      "start": 72.00941674804687,
+                      "end": 72.43941674804688
+                    },
+                    {
+                      "word": "with ",
+                      "start": 72.43941674804688,
+                      "end": 72.63641674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 72.63641674804687,
+                      "end": 72.74141674804687
+                    },
+                    {
+                      "word": "link ",
+                      "start": 72.74141674804687,
+                      "end": 73.00841674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 73.00841674804687,
+                      "end": 73.12441674804687
+                    },
+                    {
+                      "word": "learn ",
+                      "start": 73.12441674804687,
+                      "end": 73.40341674804688
+                    },
+                    {
+                      "word": "more ",
+                      "start": 73.40341674804688,
+                      "end": 73.63541674804688
+                    },
+                    {
+                      "word": "about ",
+                      "start": 73.63541674804688,
+                      "end": 73.90241674804687
+                    },
+                    {
+                      "word": "the ",
+                      "start": 73.90241674804687,
+                      "end": 74.06441674804688
+                    },
+                    {
+                      "word": "app ",
+                      "start": 74.06441674804688,
+                      "end": 74.45941674804688
+                    },
+                    {
+                      "word": "and ",
+                      "start": 74.45941674804688,
+                      "end": 74.73841674804687
+                    },
+                    {
+                      "word": "how ",
+                      "start": 74.73841674804687,
+                      "end": 74.88941674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 74.88941674804687,
+                      "end": 75.02841674804688
+                    },
+                    {
+                      "word": "activate ",
+                      "start": 75.02841674804688,
+                      "end": 75.58541674804688
+                    },
+                    {
+                      "word": "your ",
+                      "start": 75.58541674804688,
+                      "end": 75.77141674804687
+                    },
+                    {
+                      "word": "free ",
+                      "start": 75.77141674804687,
+                      "end": 76.00341674804687
+                    },
+                    {
+                      "word": "coupon ",
+                      "start": 76.00341674804687,
+                      "end": 76.41041674804687
+                    },
+                    {
+                      "word": "for ",
+                      "start": 76.41041674804687,
+                      "end": 76.66541674804688
+                    },
+                    {
+                      "word": "full ",
+                      "start": 76.66541674804688,
+                      "end": 77.01341674804688
+                    },
+                    {
+                      "word": "access.",
+                      "start": 77.01341674804688,
+                      "end": 77.88441674804687
+                    },
+                    {
+                      "word": " Did ",
+                      "start": 77.93041674804688,
+                      "end": 78.05841674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 78.05841674804688,
+                      "end": 78.16341674804687
+                    },
+                    {
+                      "word": "happen ",
+                      "start": 78.16341674804687,
+                      "end": 78.39541674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 78.39541674804687,
+                      "end": 78.47641674804687
+                    },
+                    {
+                      "word": "see ",
+                      "start": 78.47641674804687,
+                      "end": 78.63941674804687
+                    },
+                    {
+                      "word": "that?",
+                      "start": 78.63941674804687,
+                      "end": 79.04541674804688
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I did not.",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 80.13600000000001,
+                      "end": 80.456
+                    },
+                    {
+                      "word": "did ",
+                      "start": 80.456,
+                      "end": 80.69600000000001
+                    },
+                    {
+                      "word": "not.",
+                      "start": 80.69600000000001,
+                      "end": 80.936
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "No worries, Melissa! I’ll resend the text to ",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 83.639,
+                      "end": 83.802
+                    },
+                    {
+                      "word": "worries, ",
+                      "start": 83.802,
+                      "end": 84.173
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 84.173,
+                      "end": 84.812
+                    },
+                    {
+                      "word": " I’ll ",
+                      "start": 84.85775,
+                      "end": 85.06675
+                    },
+                    {
+                      "word": "resend ",
+                      "start": 85.06675,
+                      "end": 85.46175
+                    },
+                    {
+                      "word": "the ",
+                      "start": 85.46175,
+                      "end": 85.57775
+                    },
+                    {
+                      "word": "text ",
+                      "start": 85.57775,
+                      "end": 85.89175
+                    },
+                    {
+                      "word": "to ",
+                      "start": 85.89175,
+                      "end": 86.00775
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "user",
+                  "content": "Hello?",
+                  "words": [
+                    {
+                      "word": "Hello?",
+                      "start": 1.696,
+                      "end": 1.936
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Hi Melissa, it’s Amy from Liv Well Cumming, your hormone lifestyle coach. How are you doing today?",
+                  "words": [
+                    {
+                      "word": "Hi ",
+                      "start": 2.029,
+                      "end": 2.25
+                    },
+                    {
+                      "word": "Melissa, ",
+                      "start": 2.25,
+                      "end": 2.656
+                    },
+                    {
+                      "word": "it’s ",
+                      "start": 2.656,
+                      "end": 2.83
+                    },
+                    {
+                      "word": "Amy ",
+                      "start": 2.83,
+                      "end": 3.085
+                    },
+                    {
+                      "word": "from ",
+                      "start": 3.085,
+                      "end": 3.26
+                    },
+                    {
+                      "word": "Liv ",
+                      "start": 3.26,
+                      "end": 3.422
+                    },
+                    {
+                      "word": "Well ",
+                      "start": 3.422,
+                      "end": 3.608
+                    },
+                    {
+                      "word": "Cumming, ",
+                      "start": 3.608,
+                      "end": 3.898
+                    },
+                    {
+                      "word": "your ",
+                      "start": 3.898,
+                      "end": 4.037
+                    },
+                    {
+                      "word": "hormone ",
+                      "start": 4.037,
+                      "end": 4.351
+                    },
+                    {
+                      "word": "lifestyle ",
+                      "start": 4.351,
+                      "end": 4.827
+                    },
+                    {
+                      "word": "coach.",
+                      "start": 4.827,
+                      "end": 5.5
+                    },
+                    {
+                      "word": " How ",
+                      "start": 5.546333251953125,
+                      "end": 5.709333251953125
+                    },
+                    {
+                      "word": "are ",
+                      "start": 5.709333251953125,
+                      "end": 5.848333251953125
+                    },
+                    {
+                      "word": "you ",
+                      "start": 5.848333251953125,
+                      "end": 5.964333251953125
+                    },
+                    {
+                      "word": "doing ",
+                      "start": 5.964333251953125,
+                      "end": 6.197333251953125
+                    },
+                    {
+                      "word": "today?",
+                      "start": 6.197333251953125,
+                      "end": 6.707333251953125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I'm good. How are you?",
+                  "words": [
+                    {
+                      "word": "I'm ",
+                      "start": 7.906,
+                      "end": 8.306
+                    },
+                    {
+                      "word": "good. ",
+                      "start": 8.306,
+                      "end": 8.626
+                    },
+                    {
+                      "word": "How ",
+                      "start": 8.626,
+                      "end": 8.7859995
+                    },
+                    {
+                      "word": "are ",
+                      "start": 8.7859995,
+                      "end": 8.946
+                    },
+                    {
+                      "word": "you?",
+                      "start": 8.946,
+                      "end": 9.026
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "I’m doing great, thanks for asking! I wanted to check in with you since you’re around day fifteen of your program. How’s everything going so far?",
+                  "words": [
+                    {
+                      "word": "I’m ",
+                      "start": 11.272,
+                      "end": 11.47
+                    },
+                    {
+                      "word": "doing ",
+                      "start": 11.47,
+                      "end": 11.771
+                    },
+                    {
+                      "word": "great, ",
+                      "start": 11.771,
+                      "end": 12.073
+                    },
+                    {
+                      "word": "thanks ",
+                      "start": 12.073,
+                      "end": 12.329
+                    },
+                    {
+                      "word": "for ",
+                      "start": 12.329,
+                      "end": 12.48
+                    },
+                    {
+                      "word": "asking!",
+                      "start": 12.48,
+                      "end": 13.234
+                    },
+                    {
+                      "word": " I ",
+                      "start": 13.28025,
+                      "end": 13.44325
+                    },
+                    {
+                      "word": "wanted ",
+                      "start": 13.44325,
+                      "end": 13.74525
+                    },
+                    {
+                      "word": "to ",
+                      "start": 13.74525,
+                      "end": 13.83825
+                    },
+                    {
+                      "word": "check ",
+                      "start": 13.83825,
+                      "end": 14.08225
+                    },
+                    {
+                      "word": "in ",
+                      "start": 14.08225,
+                      "end": 14.19825
+                    },
+                    {
+                      "word": "with ",
+                      "start": 14.19825,
+                      "end": 14.37225
+                    },
+                    {
+                      "word": "you ",
+                      "start": 14.37225,
+                      "end": 14.52325
+                    },
+                    {
+                      "word": "since ",
+                      "start": 14.52325,
+                      "end": 14.74325
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 14.74325,
+                      "end": 14.94125
+                    },
+                    {
+                      "word": "around ",
+                      "start": 14.94125,
+                      "end": 15.25425
+                    },
+                    {
+                      "word": "day ",
+                      "start": 15.25425,
+                      "end": 15.47525
+                    },
+                    {
+                      "word": "fifteen ",
+                      "start": 15.47525,
+                      "end": 15.97425
+                    },
+                    {
+                      "word": "of ",
+                      "start": 15.97425,
+                      "end": 16.07825
+                    },
+                    {
+                      "word": "your ",
+                      "start": 16.07825,
+                      "end": 16.22925
+                    },
+                    {
+                      "word": "program.",
+                      "start": 16.22925,
+                      "end": 16.94925
+                    },
+                    {
+                      "word": " How’s ",
+                      "start": 16.995458251953124,
+                      "end": 17.170458251953125
+                    },
+                    {
+                      "word": "everything ",
+                      "start": 17.170458251953125,
+                      "end": 17.460458251953124
+                    },
+                    {
+                      "word": "going ",
+                      "start": 17.460458251953124,
+                      "end": 17.680458251953127
+                    },
+                    {
+                      "word": "so ",
+                      "start": 17.680458251953127,
+                      "end": 17.843458251953123
+                    },
+                    {
+                      "word": "far?",
+                      "start": 17.843458251953123,
+                      "end": 18.296458251953126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Going very well.",
+                  "words": [
+                    {
+                      "word": "Going ",
+                      "start": 19.665999999999997,
+                      "end": 20.145999999999997
+                    },
+                    {
+                      "word": "very ",
+                      "start": 20.555999,
+                      "end": 20.795999
+                    },
+                    {
+                      "word": "well.",
+                      "start": 20.795999,
+                      "end": 21.035998999999997
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s awesome to hear, Melissa! Since you’re in the groove, I wanted to chat about dialing in your workouts. Have you had a chance to try any workouts yet?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 22.765,
+                      "end": 23.09
+                    },
+                    {
+                      "word": "awesome ",
+                      "start": 23.09,
+                      "end": 23.415
+                    },
+                    {
+                      "word": "to ",
+                      "start": 23.415,
+                      "end": 23.52
+                    },
+                    {
+                      "word": "hear, ",
+                      "start": 23.52,
+                      "end": 23.729
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 23.729,
+                      "end": 24.414
+                    },
+                    {
+                      "word": " Since ",
+                      "start": 24.448708251953125,
+                      "end": 24.738708251953124
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 24.738708251953124,
+                      "end": 24.935708251953123
+                    },
+                    {
+                      "word": "in ",
+                      "start": 24.935708251953123,
+                      "end": 25.028708251953127
+                    },
+                    {
+                      "word": "the ",
+                      "start": 25.028708251953127,
+                      "end": 25.133708251953124
+                    },
+                    {
+                      "word": "groove, ",
+                      "start": 25.133708251953124,
+                      "end": 25.562708251953126
+                    },
+                    {
+                      "word": "I ",
+                      "start": 25.562708251953126,
+                      "end": 25.713708251953125
+                    },
+                    {
+                      "word": "wanted ",
+                      "start": 25.713708251953125,
+                      "end": 26.015708251953125
+                    },
+                    {
+                      "word": "to ",
+                      "start": 26.015708251953125,
+                      "end": 26.108708251953125
+                    },
+                    {
+                      "word": "chat ",
+                      "start": 26.108708251953125,
+                      "end": 26.387708251953125
+                    },
+                    {
+                      "word": "about ",
+                      "start": 26.387708251953125,
+                      "end": 26.631708251953125
+                    },
+                    {
+                      "word": "dialing ",
+                      "start": 26.631708251953125,
+                      "end": 27.025708251953127
+                    },
+                    {
+                      "word": "in ",
+                      "start": 27.025708251953127,
+                      "end": 27.130708251953124
+                    },
+                    {
+                      "word": "your ",
+                      "start": 27.130708251953124,
+                      "end": 27.292708251953126
+                    },
+                    {
+                      "word": "workouts.",
+                      "start": 27.292708251953126,
+                      "end": 28.175708251953125
+                    },
+                    {
+                      "word": " Have ",
+                      "start": 28.187333251953124,
+                      "end": 28.384333251953127
+                    },
+                    {
+                      "word": "you ",
+                      "start": 28.384333251953127,
+                      "end": 28.488333251953126
+                    },
+                    {
+                      "word": "had ",
+                      "start": 28.488333251953126,
+                      "end": 28.628333251953126
+                    },
+                    {
+                      "word": "a ",
+                      "start": 28.628333251953126,
+                      "end": 28.709333251953126
+                    },
+                    {
+                      "word": "chance ",
+                      "start": 28.709333251953126,
+                      "end": 29.023333251953126
+                    },
+                    {
+                      "word": "to ",
+                      "start": 29.023333251953126,
+                      "end": 29.139333251953126
+                    },
+                    {
+                      "word": "try ",
+                      "start": 29.139333251953126,
+                      "end": 29.394333251953125
+                    },
+                    {
+                      "word": "any ",
+                      "start": 29.394333251953125,
+                      "end": 29.568333251953124
+                    },
+                    {
+                      "word": "workouts ",
+                      "start": 29.568333251953124,
+                      "end": 29.998333251953124
+                    },
+                    {
+                      "word": "yet?",
+                      "start": 29.998333251953124,
+                      "end": 30.451333251953123
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I have been walking.",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 31.785999999999998,
+                      "end": 32.025999999999996
+                    },
+                    {
+                      "word": "have ",
+                      "start": 32.025999999999996,
+                      "end": 32.266
+                    },
+                    {
+                      "word": "been ",
+                      "start": 32.266,
+                      "end": 32.425999999999995
+                    },
+                    {
+                      "word": "walking.",
+                      "start": 32.425999999999995,
+                      "end": 32.826
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s a fantastic start, Melissa! Walking is such a great way to ease into things and get your body moving. Have you been tracking your walks or using the LWC Fitness App yet?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 34.825,
+                      "end": 35.057
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.057,
+                      "end": 35.127
+                    },
+                    {
+                      "word": "fantastic ",
+                      "start": 35.127,
+                      "end": 35.684
+                    },
+                    {
+                      "word": "start, ",
+                      "start": 35.684,
+                      "end": 36.021
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 36.021,
+                      "end": 36.659
+                    },
+                    {
+                      "word": " Walking ",
+                      "start": 36.7055,
+                      "end": 37.2055
+                    },
+                    {
+                      "word": "is ",
+                      "start": 37.2055,
+                      "end": 37.3325
+                    },
+                    {
+                      "word": "such ",
+                      "start": 37.3325,
+                      "end": 37.5535
+                    },
+                    {
+                      "word": "a ",
+                      "start": 37.5535,
+                      "end": 37.6235
+                    },
+                    {
+                      "word": "great ",
+                      "start": 37.6235,
+                      "end": 37.8665
+                    },
+                    {
+                      "word": "way ",
+                      "start": 37.8665,
+                      "end": 38.0415
+                    },
+                    {
+                      "word": "to ",
+                      "start": 38.0415,
+                      "end": 38.1575
+                    },
+                    {
+                      "word": "ease ",
+                      "start": 38.1575,
+                      "end": 38.4125
+                    },
+                    {
+                      "word": "into ",
+                      "start": 38.4125,
+                      "end": 38.6565
+                    },
+                    {
+                      "word": "things ",
+                      "start": 38.6565,
+                      "end": 38.9585
+                    },
+                    {
+                      "word": "and ",
+                      "start": 38.9585,
+                      "end": 39.0625
+                    },
+                    {
+                      "word": "get ",
+                      "start": 39.0625,
+                      "end": 39.2135
+                    },
+                    {
+                      "word": "your ",
+                      "start": 39.2135,
+                      "end": 39.3535
+                    },
+                    {
+                      "word": "body ",
+                      "start": 39.3535,
+                      "end": 39.6205
+                    },
+                    {
+                      "word": "moving.",
+                      "start": 39.6205,
+                      "end": 40.3285
+                    },
+                    {
+                      "word": " Have ",
+                      "start": 40.37425,
+                      "end": 40.57225
+                    },
+                    {
+                      "word": "you ",
+                      "start": 40.57225,
+                      "end": 40.68825
+                    },
+                    {
+                      "word": "been ",
+                      "start": 40.68825,
+                      "end": 40.85025
+                    },
+                    {
+                      "word": "tracking ",
+                      "start": 40.85025,
+                      "end": 41.26825
+                    },
+                    {
+                      "word": "your ",
+                      "start": 41.26825,
+                      "end": 41.45425
+                    },
+                    {
+                      "word": "walks ",
+                      "start": 41.45425,
+                      "end": 41.89525
+                    },
+                    {
+                      "word": "or ",
+                      "start": 41.89525,
+                      "end": 42.12825
+                    },
+                    {
+                      "word": "using ",
+                      "start": 42.12825,
+                      "end": 42.42925
+                    },
+                    {
+                      "word": "the ",
+                      "start": 42.42925,
+                      "end": 42.54625
+                    },
+                    {
+                      "word": "LWC ",
+                      "start": 42.54625,
+                      "end": 43.02225
+                    },
+                    {
+                      "word": "Fitness ",
+                      "start": 43.02225,
+                      "end": 43.37025
+                    },
+                    {
+                      "word": "App ",
+                      "start": 43.37025,
+                      "end": 43.56725
+                    },
+                    {
+                      "word": "yet?",
+                      "start": 43.56725,
+                      "end": 44.04325
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I have not",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 45.236,
+                      "end": 45.556
+                    },
+                    {
+                      "word": "have ",
+                      "start": 45.556,
+                      "end": 45.796
+                    },
+                    {
+                      "word": "not",
+                      "start": 45.796,
+                      "end": 46.036
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "figured out the app yet, but I am using my Apple Watch to track my step.",
+                  "words": [
+                    {
+                      "word": "figured ",
+                      "start": 46.826,
+                      "end": 47.146
+                    },
+                    {
+                      "word": "out ",
+                      "start": 47.146,
+                      "end": 47.385999999999996
+                    },
+                    {
+                      "word": "the ",
+                      "start": 47.385999999999996,
+                      "end": 47.626
+                    },
+                    {
+                      "word": "app ",
+                      "start": 47.626,
+                      "end": 47.866
+                    },
+                    {
+                      "word": "yet, ",
+                      "start": 47.866,
+                      "end": 48.505998
+                    },
+                    {
+                      "word": "but ",
+                      "start": 48.505998,
+                      "end": 48.826
+                    },
+                    {
+                      "word": "I ",
+                      "start": 48.826,
+                      "end": 49.065999999999995
+                    },
+                    {
+                      "word": "am ",
+                      "start": 49.065999999999995,
+                      "end": 49.226
+                    },
+                    {
+                      "word": "using ",
+                      "start": 49.226,
+                      "end": 49.626
+                    },
+                    {
+                      "word": "my ",
+                      "start": 49.626,
+                      "end": 49.786
+                    },
+                    {
+                      "word": "Apple ",
+                      "start": 49.786,
+                      "end": 50.186
+                    },
+                    {
+                      "word": "Watch ",
+                      "start": 50.186,
+                      "end": 50.425999999999995
+                    },
+                    {
+                      "word": "to ",
+                      "start": 50.525999999999996,
+                      "end": 50.766
+                    },
+                    {
+                      "word": "track ",
+                      "start": 50.766,
+                      "end": 51.005998
+                    },
+                    {
+                      "word": "my ",
+                      "start": 51.005998,
+                      "end": 51.165997999999995
+                    },
+                    {
+                      "word": "step.",
+                      "start": 51.165997999999995,
+                      "end": 51.406
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "That’s great that you’re using your Apple Watch to track your steps—it’s such a handy tool! The LWC Fitness App can actually complement that really well. It’s designed to help you set specific goals, track your progress, and even measure milestones like your one-mile time or how long you can hold a plank.I sent you a text earlier with a link to learn more about the app and how to activate your free coupon for full access. Did you happen to see that?",
+                  "words": [
+                    {
+                      "word": "That’s ",
+                      "start": 53.666,
+                      "end": 53.933
+                    },
+                    {
+                      "word": "great ",
+                      "start": 53.933,
+                      "end": 54.235
+                    },
+                    {
+                      "word": "that ",
+                      "start": 54.235,
+                      "end": 54.421
+                    },
+                    {
+                      "word": "you’re ",
+                      "start": 54.421,
+                      "end": 54.641
+                    },
+                    {
+                      "word": "using ",
+                      "start": 54.641,
+                      "end": 54.873
+                    },
+                    {
+                      "word": "your ",
+                      "start": 54.873,
+                      "end": 55.036
+                    },
+                    {
+                      "word": "Apple ",
+                      "start": 55.036,
+                      "end": 55.326
+                    },
+                    {
+                      "word": "Watch ",
+                      "start": 55.326,
+                      "end": 55.605
+                    },
+                    {
+                      "word": "to ",
+                      "start": 55.605,
+                      "end": 55.756
+                    },
+                    {
+                      "word": "track ",
+                      "start": 55.756,
+                      "end": 56.092
+                    },
+                    {
+                      "word": "your ",
+                      "start": 56.092,
+                      "end": 56.255
+                    },
+                    {
+                      "word": "steps—it’s ",
+                      "start": 56.255,
+                      "end": 57.149
+                    },
+                    {
+                      "word": "such ",
+                      "start": 57.149,
+                      "end": 57.428
+                    },
+                    {
+                      "word": "a ",
+                      "start": 57.428,
+                      "end": 57.509
+                    },
+                    {
+                      "word": "handy ",
+                      "start": 57.509,
+                      "end": 57.846
+                    },
+                    {
+                      "word": "tool!",
+                      "start": 57.846,
+                      "end": 58.426
+                    },
+                    {
+                      "word": " The ",
+                      "start": 58.438083251953124,
+                      "end": 58.681083251953126
+                    },
+                    {
+                      "word": "LWC ",
+                      "start": 58.681083251953126,
+                      "end": 59.39008325195312
+                    },
+                    {
+                      "word": "Fitness ",
+                      "start": 59.39008325195312,
+                      "end": 59.78408325195313
+                    },
+                    {
+                      "word": "App ",
+                      "start": 59.78408325195313,
+                      "end": 59.97008325195313
+                    },
+                    {
+                      "word": "can ",
+                      "start": 59.97008325195313,
+                      "end": 60.14408325195313
+                    },
+                    {
+                      "word": "actually ",
+                      "start": 60.14408325195313,
+                      "end": 60.63208325195313
+                    },
+                    {
+                      "word": "complement ",
+                      "start": 60.63208325195313,
+                      "end": 61.212083251953125
+                    },
+                    {
+                      "word": "that ",
+                      "start": 61.212083251953125,
+                      "end": 61.43308325195313
+                    },
+                    {
+                      "word": "really ",
+                      "start": 61.43308325195313,
+                      "end": 61.746083251953124
+                    },
+                    {
+                      "word": "well.",
+                      "start": 61.746083251953124,
+                      "end": 62.23408325195312
+                    },
+                    {
+                      "word": " It’s ",
+                      "start": 62.25716674804688,
+                      "end": 62.54716674804688
+                    },
+                    {
+                      "word": "designed ",
+                      "start": 62.54716674804688,
+                      "end": 62.977166748046876
+                    },
+                    {
+                      "word": "to ",
+                      "start": 62.977166748046876,
+                      "end": 63.08216674804687
+                    },
+                    {
+                      "word": "help ",
+                      "start": 63.08216674804687,
+                      "end": 63.29116674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 63.29116674804688,
+                      "end": 63.41816674804687
+                    },
+                    {
+                      "word": "set ",
+                      "start": 63.41816674804687,
+                      "end": 63.65016674804688
+                    },
+                    {
+                      "word": "specific ",
+                      "start": 63.65016674804688,
+                      "end": 64.20816674804688
+                    },
+                    {
+                      "word": "goals, ",
+                      "start": 64.20816674804688,
+                      "end": 64.82316674804687
+                    },
+                    {
+                      "word": "track ",
+                      "start": 64.82316674804687,
+                      "end": 65.29916674804687
+                    },
+                    {
+                      "word": "your ",
+                      "start": 65.29916674804687,
+                      "end": 65.46216674804687
+                    },
+                    {
+                      "word": "progress, ",
+                      "start": 65.46216674804687,
+                      "end": 66.08916674804688
+                    },
+                    {
+                      "word": "and ",
+                      "start": 66.08916674804688,
+                      "end": 66.37916674804687
+                    },
+                    {
+                      "word": "even ",
+                      "start": 66.37916674804687,
+                      "end": 66.72716674804687
+                    },
+                    {
+                      "word": "measure ",
+                      "start": 66.72716674804687,
+                      "end": 67.06416674804687
+                    },
+                    {
+                      "word": "milestones ",
+                      "start": 67.06416674804687,
+                      "end": 67.73716674804687
+                    },
+                    {
+                      "word": "like ",
+                      "start": 67.73716674804687,
+                      "end": 67.93416674804688
+                    },
+                    {
+                      "word": "your ",
+                      "start": 67.93416674804688,
+                      "end": 68.14316674804688
+                    },
+                    {
+                      "word": "one-mile ",
+                      "start": 68.14316674804688,
+                      "end": 68.77016674804688
+                    },
+                    {
+                      "word": "time ",
+                      "start": 68.77016674804688,
+                      "end": 69.23516674804688
+                    },
+                    {
+                      "word": "or ",
+                      "start": 69.23516674804688,
+                      "end": 69.39716674804687
+                    },
+                    {
+                      "word": "how ",
+                      "start": 69.39716674804687,
+                      "end": 69.58316674804688
+                    },
+                    {
+                      "word": "long ",
+                      "start": 69.58316674804688,
+                      "end": 69.80416674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 69.80416674804688,
+                      "end": 69.90816674804688
+                    },
+                    {
+                      "word": "can ",
+                      "start": 69.90816674804688,
+                      "end": 70.04816674804688
+                    },
+                    {
+                      "word": "hold ",
+                      "start": 70.04816674804688,
+                      "end": 70.24516674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 70.24516674804687,
+                      "end": 70.33816674804687
+                    },
+                    {
+                      "word": "plank.",
+                      "start": 70.33816674804687,
+                      "end": 70.91816674804687
+                    },
+                    {
+                      "word": "I ",
+                      "start": 70.96441674804687,
+                      "end": 71.16241674804688
+                    },
+                    {
+                      "word": "sent ",
+                      "start": 71.16241674804688,
+                      "end": 71.41741674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 71.41741674804688,
+                      "end": 71.54541674804688
+                    },
+                    {
+                      "word": "a ",
+                      "start": 71.54541674804688,
+                      "end": 71.63841674804688
+                    },
+                    {
+                      "word": "text ",
+                      "start": 71.63841674804688,
+                      "end": 72.00941674804687
+                    },
+                    {
+                      "word": "earlier ",
+                      "start": 72.00941674804687,
+                      "end": 72.43941674804688
+                    },
+                    {
+                      "word": "with ",
+                      "start": 72.43941674804688,
+                      "end": 72.63641674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 72.63641674804687,
+                      "end": 72.74141674804687
+                    },
+                    {
+                      "word": "link ",
+                      "start": 72.74141674804687,
+                      "end": 73.00841674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 73.00841674804687,
+                      "end": 73.12441674804687
+                    },
+                    {
+                      "word": "learn ",
+                      "start": 73.12441674804687,
+                      "end": 73.40341674804688
+                    },
+                    {
+                      "word": "more ",
+                      "start": 73.40341674804688,
+                      "end": 73.63541674804688
+                    },
+                    {
+                      "word": "about ",
+                      "start": 73.63541674804688,
+                      "end": 73.90241674804687
+                    },
+                    {
+                      "word": "the ",
+                      "start": 73.90241674804687,
+                      "end": 74.06441674804688
+                    },
+                    {
+                      "word": "app ",
+                      "start": 74.06441674804688,
+                      "end": 74.45941674804688
+                    },
+                    {
+                      "word": "and ",
+                      "start": 74.45941674804688,
+                      "end": 74.73841674804687
+                    },
+                    {
+                      "word": "how ",
+                      "start": 74.73841674804687,
+                      "end": 74.88941674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 74.88941674804687,
+                      "end": 75.02841674804688
+                    },
+                    {
+                      "word": "activate ",
+                      "start": 75.02841674804688,
+                      "end": 75.58541674804688
+                    },
+                    {
+                      "word": "your ",
+                      "start": 75.58541674804688,
+                      "end": 75.77141674804687
+                    },
+                    {
+                      "word": "free ",
+                      "start": 75.77141674804687,
+                      "end": 76.00341674804687
+                    },
+                    {
+                      "word": "coupon ",
+                      "start": 76.00341674804687,
+                      "end": 76.41041674804687
+                    },
+                    {
+                      "word": "for ",
+                      "start": 76.41041674804687,
+                      "end": 76.66541674804688
+                    },
+                    {
+                      "word": "full ",
+                      "start": 76.66541674804688,
+                      "end": 77.01341674804688
+                    },
+                    {
+                      "word": "access.",
+                      "start": 77.01341674804688,
+                      "end": 77.88441674804687
+                    },
+                    {
+                      "word": " Did ",
+                      "start": 77.93041674804688,
+                      "end": 78.05841674804688
+                    },
+                    {
+                      "word": "you ",
+                      "start": 78.05841674804688,
+                      "end": 78.16341674804687
+                    },
+                    {
+                      "word": "happen ",
+                      "start": 78.16341674804687,
+                      "end": 78.39541674804687
+                    },
+                    {
+                      "word": "to ",
+                      "start": 78.39541674804687,
+                      "end": 78.47641674804687
+                    },
+                    {
+                      "word": "see ",
+                      "start": 78.47641674804687,
+                      "end": 78.63941674804687
+                    },
+                    {
+                      "word": "that?",
+                      "start": 78.63941674804687,
+                      "end": 79.04541674804688
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "I did not.",
+                  "words": [
+                    {
+                      "word": "I ",
+                      "start": 80.13600000000001,
+                      "end": 80.456
+                    },
+                    {
+                      "word": "did ",
+                      "start": 80.456,
+                      "end": 80.69600000000001
+                    },
+                    {
+                      "word": "not.",
+                      "start": 80.69600000000001,
+                      "end": 80.936
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "No worries, Melissa! I’ll resend the text to ",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 83.639,
+                      "end": 83.802
+                    },
+                    {
+                      "word": "worries, ",
+                      "start": 83.802,
+                      "end": 84.173
+                    },
+                    {
+                      "word": "Melissa!",
+                      "start": 84.173,
+                      "end": 84.812
+                    },
+                    {
+                      "word": " I’ll ",
+                      "start": 84.85775,
+                      "end": 85.06675
+                    },
+                    {
+                      "word": "resend ",
+                      "start": 85.06675,
+                      "end": 85.46175
+                    },
+                    {
+                      "word": "the ",
+                      "start": 85.46175,
+                      "end": 85.57775
+                    },
+                    {
+                      "word": "text ",
+                      "start": 85.57775,
+                      "end": 85.89175
+                    },
+                    {
+                      "word": "to ",
+                      "start": 85.89175,
+                      "end": 86.00775
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "0b75516eb7557345",
+                  "name": "resend_text_message",
+                  "arguments": "{\"gender\":\"Female\",\"stage\":\"Week 2 (day 15)\",\"phone_number\":\"+14702554588\"}"
+                }
+              ],
+              "latency": {},
+              "call_cost": {
+                "total_duration_unit_price": 0,
+                "product_costs": [],
+                "combined_cost": 0,
+                "total_duration_seconds": 0
+              },
+              "opt_out_sensitive_data_storage": false,
+              "from_number": "+14702357670",
+              "to_number": "+14702554588",
+              "direction": "outbound",
+              "telephony_identifier": {
+                "twilio_call_sid": "CAb1875d0349b63c81c64a5ad28fe4f88d"
+              }
+            },
+            "name": "resend_text_message",
+            "args": {
+              "gender": "Female",
+              "stage": "Week 2 (day 15)",
+              "phone_number": "+14702554588"
+            }
+          },
+          "webhookUrl": "https://n8n.verstandai.agency/webhook/resend",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "718b9023-a9de-49e0-94a2-bcb3315f06b6",
+  "triggerCount": 1,
+  "tags": []
+}
